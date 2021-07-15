@@ -14,14 +14,21 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 
 ```
 Node
-bcrypt: encriptar contraseñas
-body-parser: parsear a formato json
-connect-multiparty: guardar imagenes videos
-express: framework de base
-moment: fechas y horas
-mongoose: modelado
-jsonwebtoken: generar token con informacion del usuario para luego verificar cada peticion al servidor
-jwt-simple: decodificar tokens y ver si es valido
+
+Paquetes de producción
+
+- bcrypt: encriptar contraseñas
+- body-parser: parsear a formato json
+- connect-multiparty: guardar imagenes videos
+- express: framework de base
+- moment: fechas y horas
+- mongoose: modelado
+- jsonwebtoken: generar token con informacion del usuario - para luego verificar cada peticion al servidor
+- jwt-simple: decodificar tokens y ver si es valido
+
+Paquetes de desarrollo
+
+- nodemon: cambio instantaneo o dinamico en desarrollo
 
 ```
 
@@ -32,7 +39,8 @@ _Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener 
 _Dí cómo será ese paso_
 
 ```
-Da un ejemplo
+Al descargar Robo 3t se activar mongod.exe en su respectiva carpeta, me salia un error pero era porque no tenia la carpeta C:/data/db
+Despues conectarla al puerto por defecto 27017
 ```
 
 _Y repite_
@@ -71,9 +79,9 @@ _Agrega notas adicionales sobre como hacer deploy_
 
 _Menciona las herramientas que utilizaste para crear tu proyecto_
 
-- [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
-- [Maven](https://maven.apache.org/) - Manejador de dependencias
-- [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
+-   [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
+-   [Maven](https://maven.apache.org/) - Manejador de dependencias
+-   [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
 
 ## Contribuyendo 🖇️
 
@@ -91,8 +99,8 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 
 _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
 
-- **Andrés Villanueva** - _Trabajo Inicial_ - [villanuevand](https://github.com/villanuevand)
-- **Fulanito Detal** - _Documentación_ - [fulanitodetal](#fulanito-de-tal)
+-   **Andrés Villanueva** - _Trabajo Inicial_ - [villanuevand](https://github.com/villanuevand)
+-   **Fulanito Detal** - _Documentación_ - [fulanitodetal](#fulanito-de-tal)
 
 También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto.
 
@@ -102,10 +110,10 @@ Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md
 
 ## Expresiones de Gratitud 🎁
 
-- Comenta a otros sobre este proyecto 📢
-- Invita una cerveza 🍺 o un café ☕ a alguien del equipo.
-- Da las gracias públicamente 🤓.
-- etc.
+-   Comenta a otros sobre este proyecto 📢
+-   Invita una cerveza 🍺 o un café ☕ a alguien del equipo.
+-   Da las gracias públicamente 🤓.
+-   etc.
 
 ---
 
