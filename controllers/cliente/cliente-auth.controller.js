@@ -1,8 +1,9 @@
 const Cliente = require("../../models/cliente.model");
 const bcrypt = require("bcryptjs");
 const { crearToken } = require("../../helpers/jwt");
+const { response } = require("express");
 
-const registroCliente = async (req, res) => {
+const registroCliente = async (req, res = response) => {
     const { email, password } = req.body;
     try {
         // Comprobar si ya existe el correo
@@ -37,11 +38,11 @@ const registroCliente = async (req, res) => {
     }
 };
 
-const loginCliente = async (req, res) => {
+const loginCliente = async (req, res = Response) => {
     const { email, password } = req.body;
     try {
         const cliente = await Cliente.findOne({ email });
-        if (!clienteDB) {
+        if (!cliente) {
             res.status(404).json({
                 ok: false,
                 msg: "Correo no encontrado",

@@ -1,12 +1,13 @@
-import jwt from "jwt-simple";
-import moment from "moment";
+const jwt = require("jwt-simple");
+const moment = require("moment");
 
 const crearToken = (usuario) => {
+    const { uid, nombre, apellido, email } = usuario;
     const payload = {
         uid,
-        nombre: usuario.nombre,
-        apellido: usuario.apellido,
-        email: usuario.email,
+        nombre,
+        apellido,
+        email,
         iat: moment().unix(),
         exp: moment().add(7, "days").unix(),
     };
