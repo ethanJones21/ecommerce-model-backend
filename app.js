@@ -3,22 +3,17 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
 
-const port = process.env.port || 4201;
+const { dbConnection } = require("./database/config");
 
 const ClienteRoutes = require("./routes/cliente.routes");
-
-mongoose.connect("mongodb://127.0.0.1:27017/tienda", (err, res) =>
-    err
-        ? console.log(err)
-        : app.listen(port, () => console.log("Server run in port " + port))
-);
 
 //// Lectura y parseo del body
 app.use(express.json());
 ////  Leer de formularios
 app.use(express.urlencoded({ extended: true }));
+
+dbConnection();
 
 // CORSE
 app.use((req, res, next) => {
@@ -35,6 +30,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/api", ClienteRoutes);
+app.use("/cliente", ClienteRoutes);
 
-module.exports = app;
+// TODO: Lo último PARA PRODUCCION
+// app.get('*', (req, res) => {
+//     res.sendFile( path.resolve( __dirname, 'public/index.html' ) );
+// });
+
+app.listen(process.env.MONGO_PORT, () => {
+    console.log("Servidor corriendo en puerto " + process.env.MONGO_PORT);
+});
