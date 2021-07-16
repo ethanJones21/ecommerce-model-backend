@@ -1,7 +1,7 @@
 import jwt from "jwt-simple";
 import moment from "moment";
 
-exports.createToken = (usuario) => {
+const crearToken = (usuario) => {
     const payload = {
         uid,
         nombre: usuario.nombre,
@@ -11,4 +11,8 @@ exports.createToken = (usuario) => {
         exp: moment().add(7, "days").unix(),
     };
     return jwt.encode(payload, process.env.JWT_PASS);
+};
+
+module.exports = {
+    crearToken,
 };

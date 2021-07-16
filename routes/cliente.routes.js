@@ -3,6 +3,7 @@ const {
     registroCliente,
     loginCliente,
 } = require("../controllers/cliente/cliente-auth.controller");
+
 const {
     actualizarCliente,
     desactivarCliente,
@@ -11,5 +12,6 @@ const {
 const router = Router();
 
 router.post("/registro_cliente", registroCliente);
+router.post("/login_cliente", loginCliente);
 
 module.exports = router;

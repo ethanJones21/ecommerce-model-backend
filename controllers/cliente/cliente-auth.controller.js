@@ -1,5 +1,6 @@
 const Cliente = require("../../models/cliente.model");
 const bcrypt = require("bcryptjs");
+const { crearToken } = require("../../helpers/jwt");
 
 const registroCliente = async (req, res) => {
     const { email, password } = req.body;
@@ -22,12 +23,10 @@ const registroCliente = async (req, res) => {
         // guardar cliente
         await nuevoCliente.save();
 
-        // generar token de jwt
-        const token = await generarJWT(usuario.id);
-
         res.json({
             ok: true,
-            token,
+            user: nuevoCliente,
+            token: crearToken(nuevoCliente),
         });
     } catch (error) {
         console.log(error);
@@ -41,7 +40,7 @@ const registroCliente = async (req, res) => {
 const loginCliente = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const clienteDB = await Cliente.findOne({ email });
+        const cliente = await Cliente.findOne({ email });
         if (!clienteDB) {
             res.status(404).json({
                 ok: false,
@@ -49,14 +48,26 @@ const loginCliente = async (req, res) => {
             });
         }
 
-        const validPass = bcrypt.compareSync(password, clienteDB.password);
+        const validPass = bcrypt.compareSync(password, cliente.password);
         if (!validPass) {
             res.status(404).json({
                 ok: false,
                 msg: "Contraseña incorrecta",
             });
         }
-    } catch (error) {}
+
+        res.json({
+            ok: true,
+            user: cliente,
+            token: crearToken(cliente),
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error inesperado... revisar logs",
+        });
+    }
 };
 
 module.exports = {

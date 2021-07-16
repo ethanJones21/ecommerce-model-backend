@@ -1,8 +1,7 @@
 "use strict";
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose, { Schema } = require("mongoose");
 
-const ClienteSchema = Schema({
+const ClienteSchema = new Schema({
     nombre: { type: String, required: true },
     apellido: { type: String, required: true },
     pais: { type: String, required: false },
@@ -13,6 +12,6 @@ const ClienteSchema = Schema({
     genero: { type: String, required: false },
     fnacimiento: { type: String, required: false },
     dni: { type: String, required: false },
-});
+},{collection: 'clientes'});
 
 module.exports = mongoose.model("Cliente", ClienteSchema);
