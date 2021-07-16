@@ -10,5 +10,5 @@ exports.createToken = (usuario) => {
         iat: moment().unix(),
         exp: moment().add(7, "days").unix(),
     };
-    jwt.encode(payload, process.env.JWT_PASS);
+    return jwt.encode(payload, process.env.JWT_PASS);
 };
