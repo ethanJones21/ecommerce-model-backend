@@ -14,4 +14,7 @@ const router = Router();
 router.post("/registro_cliente", registroCliente);
 router.post("/login_cliente", loginCliente);
 
+router.put("/:id", actualizarCliente);
+router.patch("/:id", desactivarCliente);
+
 module.exports = router;

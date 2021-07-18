@@ -1,33 +1,33 @@
-const { response } = require("express");
-const Cliente = require("../../models/cliente.model");
+const bcrypt = require("bcryptjs");
+const Admin = require("../../models/admin.model");
 const bcrypt = require("bcryptjs");
 const { crearToken } = require("../../helpers/auth/jwt");
 
-const registroCliente = async (req, res = response) => {
+const registroAdmin = async (req, res = response) => {
     const { email, password } = req.body;
     try {
         // Comprobar si ya existe el correo
-        const existeEmail = await Cliente.findOne({ email });
+        const existeEmail = await Admin.findOne({ email });
         if (existeEmail) {
             res.status(404).json({
                 ok: false,
                 msg: "Correo ya está registrado",
             });
         }
-        // Creando un nuevo cliente
-        const nuevoCliente = new Cliente(req.body);
+        // Creando un nuevo admin
+        const nuevoAdmin = new Admin(req.body);
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        nuevoCliente.password = bcrypt.hashSync(password, salt);
+        nuevoAdmin.password = bcrypt.hashSync(password, salt);
 
-        // guardar cliente
-        await nuevoCliente.save();
+        // guardar admin
+        await nuevoAdmin.save();
 
         res.json({
             ok: true,
-            user: nuevoCliente,
-            token: crearToken(nuevoCliente),
+            user: nuevoAdmin,
+            token: crearToken(nuevoAdmin),
         });
     } catch (error) {
         console.log(error);
@@ -38,18 +38,18 @@ const registroCliente = async (req, res = response) => {
     }
 };
 
-const loginCliente = async (req, res = Response) => {
+const loginAdmin = async (req, res = Response) => {
     const { email, password } = req.body;
     try {
-        const cliente = await Cliente.findOne({ email });
-        if (!cliente) {
+        const admin = await Admin.findOne({ email });
+        if (!admin) {
             res.status(404).json({
                 ok: false,
                 msg: "Correo no encontrado",
             });
         }
 
-        const validPass = bcrypt.compareSync(password, cliente.password);
+        const validPass = bcrypt.compareSync(password, admin.password);
         if (!validPass) {
             res.status(404).json({
                 ok: false,
@@ -59,8 +59,8 @@ const loginCliente = async (req, res = Response) => {
 
         res.json({
             ok: true,
-            user: cliente,
-            token: crearToken(cliente),
+            user: admin,
+            token: crearToken(admin),
         });
     } catch (error) {
         console.log(error);
@@ -72,6 +72,6 @@ const loginCliente = async (req, res = Response) => {
 };
 
 module.exports = {
-    registroCliente,
-    loginCliente,
+    registroAdmin,
+    loginAdmin,
 };

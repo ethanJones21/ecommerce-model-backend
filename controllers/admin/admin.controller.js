@@ -1,15 +1,15 @@
 const { response } = require("express");
-const Cliente = require("../../models/cliente.model");
+const Admin = require("../../models/admin.model");
 
-const actualizarCliente = async (req, res = response) => {
+const actualizarAdmin = async (req, res = response) => {
     const nuevaData = req.body;
     const id = req.params.id;
     try {
-        const nuevoCliente = await Cliente.findByIdAndUpdate(id, nuevaData);
+        const nuevoAdmin = await Admin.findByIdAndUpdate(id, nuevaData);
         res.json({
             ok: true,
-            msg: "Cliente actualizado",
-            nuevoCliente,
+            msg: "Admin actualizado",
+            nuevoAdmin,
         });
     } catch (error) {
         console.log(error);
@@ -20,14 +20,14 @@ const actualizarCliente = async (req, res = response) => {
     }
 };
 
-const desactivarCliente = async (req, res = Response) => {
+const desactivarAdmin = async (req, res = Response) => {
     const id = req.params.id;
     const inactivo = { $set: { activo: false } };
     try {
-        const cliente = await Cliente.findByIdAndUpdate(id, inactivo);
+        await Admin.findByIdAndUpdate(id, inactivo);
         res.json({
             ok: true,
-            msg: "Cliente inactivo",
+            msg: "Admin inactivo",
         });
     } catch (error) {
         console.log(error);
@@ -39,6 +39,6 @@ const desactivarCliente = async (req, res = Response) => {
 };
 
 module.exports = {
-    actualizarCliente,
-    desactivarCliente,
+    actualizarAdmin,
+    desactivarAdmin,
 };
