@@ -6,7 +6,7 @@ const app = express();
 
 const { dbConnection } = require("./database/config");
 
-const ClienteRoutes = require("./routes/cliente.routes");
+const ClientsRoutes = require("./routes/clients.routes");
 
 //// Lectura y parseo del body
 app.use(express.json());
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/cliente", ClienteRoutes);
+app.use("/clients", ClientsRoutes);
 
 // TODO: Lo último PARA PRODUCCION
 // app.get('*', (req, res) => {

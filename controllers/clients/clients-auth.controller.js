@@ -1,9 +1,9 @@
-const { response } = require("express");
+const { response, request } = require("express");
 const Cliente = require("../../models/cliente.model");
 const bcrypt = require("bcryptjs");
 const { crearToken } = require("../../helpers/auth/jwt");
 
-const registroCliente = async (req, res = response) => {
+const registerClient = async (req = request, res = response) => {
     const { email, password } = req.body;
     try {
         // Comprobar si ya existe el correo
@@ -38,7 +38,7 @@ const registroCliente = async (req, res = response) => {
     }
 };
 
-const loginCliente = async (req, res = Response) => {
+const loginClient = async (req = request, res = Response) => {
     const { email, password } = req.body;
     try {
         const cliente = await Cliente.findOne({ email });
@@ -72,6 +72,6 @@ const loginCliente = async (req, res = Response) => {
 };
 
 module.exports = {
-    registroCliente,
-    loginCliente,
+    registerClient,
+    loginClient,
 };
