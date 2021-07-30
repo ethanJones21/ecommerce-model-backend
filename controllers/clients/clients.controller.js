@@ -1,5 +1,6 @@
 const { response, request } = require("express");
 const Cliente = require("../../models/cliente.model");
+const bcrypt = require("bcryptjs");
 
 const getClientsByPage = async (req = request, res = response) => {
     const term = req.query.term;
@@ -88,6 +89,40 @@ const getClient = async (req = request, res = response) => {
     }
 };
 
+const createClientTest = async (req = request, res = response) => {
+    const { email, password } = req.body;
+    try {
+        // Comprobar si ya existe el correo
+        const existeEmail = await Cliente.findOne({ email });
+        if (existeEmail) {
+            res.status(404).json({
+                ok: false,
+                msg: "Correo ya está registrado",
+            });
+        }
+        // Creando un nuevo cliente
+        const nuevoCliente = new Cliente(req.body);
+
+        // Encriptar contraseña
+        const salt = bcrypt.genSaltSync();
+        nuevoCliente.password = bcrypt.hashSync(password, salt);
+        nuevoCliente.test = true;
+        // guardar cliente
+        await nuevoCliente.save();
+
+        res.json({
+            ok: true,
+            client: nuevoCliente,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error inesperado... revisar logs",
+        });
+    }
+};
+
 const updateClient = async (req = request, res = response) => {
     const nuevaData = req.body;
     const id = req.params.id;
@@ -128,6 +163,7 @@ const deactivateClient = async (req = request, res = Response) => {
 module.exports = {
     getClientsByPage,
     getClient,
+    createClientTest,
     updateClient,
     deactivateClient,
 };
