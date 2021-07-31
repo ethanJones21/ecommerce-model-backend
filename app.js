@@ -3,13 +3,20 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const morgan = require("morgan");
 
 const { dbConnection } = require("./database/config");
 
-const ClientsRoutes = require("./routes/clients.routes");
+const ClientsRoutes = require("./routes/client.routes");
+const UsersRoutes = require("./routes/user.routes");
+const ProductsRoutes = require("./routes/product.routes");
 
-morgan("tiny");
+const UsersAuthRoutes = require("./auth/routes/user-auth.routes");
+const ClientsAuthRoutes = require("./auth/routes/client-auth.routes");
+const CORS = require("./middlewares/cors.middleware");
+
+app.use(morgan("combined"));
 //// Lectura y parseo del body
 app.use(express.json());
 ////  Leer de formularios
@@ -17,22 +24,17 @@ app.use(express.urlencoded({ extended: true }));
 
 dbConnection();
 
-// CORSE
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Access-Control-Allow-Request-Method"
-    );
-    res.header(
-        "Access-Control-Allow-Methods",
-        "GET, PUT, PATCH, POST, DELETE, OPTIONS"
-    );
-    res.header("Allow", "GET, PUT, POST, DELETE, OPTIONS");
-    next();
-});
+// CORS
+// app.use(CORS);
+app.use(cors());
 
 app.use("/clients", ClientsRoutes);
+app.use("/users", UsersRoutes);
+app.use("/products", ProductsRoutes);
+
+// AUTH
+app.use("/auth", ClientsAuthRoutes);
+app.use("/auth-user", UsersAuthRoutes);
 
 // TODO: Lo último PARA PRODUCCION
 // app.get('*', (req, res) => {

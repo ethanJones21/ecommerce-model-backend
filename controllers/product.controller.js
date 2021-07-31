@@ -1,8 +1,13 @@
 const { response, request } = require("express");
-const Cliente = require("../../models/cliente.model");
+const Product = require("../models/product.model");
 const bcrypt = require("bcryptjs");
+const {
+    conditionPrevious,
+    conditionNext,
+    fillPagesArr,
+} = require("../helpers/pages.helper");
 
-const getClientsByPage = async (req = request, res = response) => {
+const getProductsByPage = async (req = request, res = response) => {
     const term = req.query.term;
     const regex = new RegExp(term, "i");
 
@@ -11,8 +16,8 @@ const getClientsByPage = async (req = request, res = response) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    let clients = {
-        clients: [],
+    let products = {
+        products: [],
         next: null,
         previous: null,
         pages: [],
@@ -20,40 +25,25 @@ const getClientsByPage = async (req = request, res = response) => {
     };
 
     try {
-        const longitud = await Cliente.find({
+        const longitud = await Product.find({
             $or: [{ apellido: regex }, { email: regex }],
         }).countDocuments();
-        clients.longitud = longitud;
-        clients.clients = await Cliente.find({
+        products.longitud = longitud;
+        products.products = await Product.find({
             $or: [{ nombre: regex }, { apellido: regex }, { email: regex }],
         })
             .limit(limit)
             .skip(startIndex);
 
         const lengthArr = Math.ceil(longitud / limit);
-        clients.pages = llenarArr(lengthArr);
+        products.pages = fillPagesArr(lengthArr);
 
-        if (startIndex > 0) {
-            clients.previous = {
-                page: page - 1,
-                limit,
-            };
-        } else {
-            clients.previous = null;
-        }
-
-        if (endIndex < longitud) {
-            clients.next = {
-                page: page + 1,
-                limit,
-            };
-        } else {
-            clients.next = null;
-        }
+        products.previous = conditionPrevious(startIndex, page, limit);
+        products.previous = conditionNext(endIndex, longitud, page, limit);
 
         res.json({
             ok: true,
-            clients,
+            products,
         });
     } catch (error) {
         console.log(error);
@@ -64,21 +54,13 @@ const getClientsByPage = async (req = request, res = response) => {
     }
 };
 
-const llenarArr = (lengthArr) => {
-    let arr = [];
-    for (let i = 0; i < lengthArr; i++) {
-        arr[i] = i + 1;
-    }
-    return arr;
-};
-
-const getClient = async (req = request, res = response) => {
+const getProduct = async (req = request, res = response) => {
     const id = req.params.id;
     try {
-        const client = await Cliente.findById(id);
+        const product = await Product.findById(id);
         res.json({
             ok: true,
-            client,
+            product,
         });
     } catch (error) {
         console.log(error);
@@ -89,30 +71,31 @@ const getClient = async (req = request, res = response) => {
     }
 };
 
-const createClientTest = async (req = request, res = response) => {
-    const { email, password } = req.body;
+const createProduct = async (req = request, res = response) => {
+    const { email, pass } = req.body;
     try {
         // Comprobar si ya existe el correo
-        const existeEmail = await Cliente.findOne({ email });
-        if (existeEmail) {
+        const existEmail = await Product.findOne({ email });
+        if (existEmail) {
             res.status(404).json({
                 ok: false,
                 msg: "Correo ya está registrado",
             });
         }
-        // Creando un nuevo cliente
-        const nuevoCliente = new Cliente(req.body);
+        // Creando un nuevo producto
+        const newProduct = new Product(req.body);
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        nuevoCliente.password = bcrypt.hashSync(password, salt);
-        nuevoCliente.test = true;
-        // guardar cliente
-        await nuevoCliente.save();
+        newProduct.pass = bcrypt.hashSync(pass, salt);
+        newProduct.test = true;
+        // guardar producto
+        await newProduct.save();
 
         res.json({
             ok: true,
-            client: nuevoCliente,
+            msg: "Producto creado",
+            product: newProduct,
         });
     } catch (error) {
         console.log(error);
@@ -123,15 +106,15 @@ const createClientTest = async (req = request, res = response) => {
     }
 };
 
-const updateClient = async (req = request, res = response) => {
+const updateProduct = async (req = request, res = response) => {
     const nuevaData = req.body;
     const id = req.params.id;
     try {
-        const nuevoCliente = await Cliente.findByIdAndUpdate(id, nuevaData);
+        const newProduct = await Product.findByIdAndUpdate(id, nuevaData);
         res.json({
             ok: true,
-            msg: "Cliente actualizado",
-            client: nuevoCliente,
+            msg: "Producto actualizado",
+            product: newProduct,
         });
     } catch (error) {
         console.log(error);
@@ -142,14 +125,14 @@ const updateClient = async (req = request, res = response) => {
     }
 };
 
-const deactivateClient = async (req = request, res = Response) => {
+const deactivateProduct = async (req = request, res = Response) => {
     const id = req.params.id;
-    const inactivo = { $set: { activo: false } };
+    const inactive = { $set: { active: false } };
     try {
-        await Cliente.findByIdAndUpdate(id, inactivo);
+        await Product.findByIdAndUpdate(id, inactive);
         res.json({
             ok: true,
-            msg: "Cliente inactivo",
+            msg: "Producto inactivo",
         });
     } catch (error) {
         console.log(error);
@@ -161,9 +144,9 @@ const deactivateClient = async (req = request, res = Response) => {
 };
 
 module.exports = {
-    getClientsByPage,
-    getClient,
-    createClientTest,
-    updateClient,
-    deactivateClient,
+    getProductsByPage,
+    getProduct,
+    createProduct,
+    updateProduct,
+    deactivateProduct,
 };
