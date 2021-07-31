@@ -1,7 +1,7 @@
 const jwt = require("jwt-simple");
 const moment = require("moment");
 
-const crearToken = (usuario) => {
+const createToken = (usuario) => {
     const { uid, nombre, apellido, email } = usuario;
     const payload = {
         uid,
@@ -15,5 +15,5 @@ const crearToken = (usuario) => {
 };
 
 module.exports = {
-    crearToken,
+    createToken,
 };
