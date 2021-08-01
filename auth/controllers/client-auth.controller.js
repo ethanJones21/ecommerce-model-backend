@@ -9,7 +9,7 @@ const registerClient = async (req = request, res = response) => {
         // Comprobar si ya existe el correo
         const existeEmail = await Client.findOne({ email });
         if (existeEmail) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok: false,
                 msg: "Correo ya está registrado",
             });
@@ -19,7 +19,7 @@ const registerClient = async (req = request, res = response) => {
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        newClient.password = bcrypt.hashSync(pass, salt);
+        newClient.pass = bcrypt.hashSync(pass, salt);
 
         // guardar cliente
         await newClient.save();

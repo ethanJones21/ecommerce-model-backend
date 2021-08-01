@@ -8,7 +8,7 @@ const registerUser = async (req, res = response) => {
         // Comprobar si ya existe el correo
         const existEmail = await User.findOne({ email });
         if (existEmail) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok: false,
                 msg: "Correo ya está registrado",
             });
@@ -40,9 +40,9 @@ const registerUser = async (req, res = response) => {
 const loginUser = async (req, res = Response) => {
     const { email, pass } = req.body;
     try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            res.status(404).json({
+        const searchEmail = await User.findOne({ email });
+        if (!searchEmail) {
+            return res.status(404).json({
                 ok: false,
                 msg: "Correo no encontrado",
             });
@@ -50,7 +50,7 @@ const loginUser = async (req, res = Response) => {
 
         const validPass = bcrypt.compareSync(pass, user.pass);
         if (!validPass) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok: false,
                 msg: "Contraseña incorrecta",
             });

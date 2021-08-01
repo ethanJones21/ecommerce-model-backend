@@ -14,7 +14,6 @@ const ProductsRoutes = require("./routes/product.routes");
 
 const UsersAuthRoutes = require("./auth/routes/user-auth.routes");
 const ClientsAuthRoutes = require("./auth/routes/client-auth.routes");
-const CORS = require("./middlewares/cors.middleware");
 
 app.use(morgan("combined"));
 //// Lectura y parseo del body

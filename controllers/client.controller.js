@@ -26,11 +26,11 @@ const getClientsByPage = async (req = request, res = response) => {
 
     try {
         const longitud = await Client.find({
-            $or: [{ apellido: regex }, { email: regex }],
+            $or: [{ name: regex }, { lastname: regex }, { email: regex }],
         }).countDocuments();
         clients.longitud = longitud;
         clients.clients = await Client.find({
-            $or: [{ nombre: regex }, { apellido: regex }, { email: regex }],
+            $or: [{ name: regex }, { lastname: regex }, { email: regex }],
         })
             .limit(limit)
             .skip(startIndex);
@@ -39,7 +39,7 @@ const getClientsByPage = async (req = request, res = response) => {
         clients.pages = fillPagesArr(lengthArr);
 
         clients.previous = conditionPrevious(startIndex, page, limit);
-        clients.previous = conditionNext(endIndex, longitud, page, limit);
+        clients.next = conditionNext(endIndex, longitud, page, limit);
 
         res.json({
             ok: true,
@@ -77,7 +77,7 @@ const createClientTest = async (req = request, res = response) => {
         // Comprobar si ya existe el correo
         const existEmail = await Client.findOne({ email });
         if (existEmail) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok: false,
                 msg: "Correo ya está registrado",
             });
@@ -109,7 +109,27 @@ const updateClient = async (req = request, res = response) => {
     const nuevaData = req.body;
     const id = req.params.id;
     try {
-        const newClient = await Client.findByIdAndUpdate(id, nuevaData);
+        const searchID = await Client.findById(id);
+        if (!searchID) {
+            return res.status(404).json({
+                ok: true,
+                msg: "Cliente no encontrado por id",
+                client: {},
+            });
+        }
+
+        const searchEmail = await Client.findOne({ email });
+        if (searchEmail) {
+            return res.status(404).json({
+                ok: true,
+                msg: "Este correo ya existe",
+                client: {},
+            });
+        }
+
+        const newClient = await Client.findByIdAndUpdate(id, nuevaData, {
+            new: true,
+        });
         res.json({
             ok: true,
             msg: "Cliente actualizado",

@@ -26,11 +26,11 @@ const getProductsByPage = async (req = request, res = response) => {
 
     try {
         const longitud = await Product.find({
-            $or: [{ apellido: regex }, { email: regex }],
+            $or: [{ title: regex }, { description: regex }, { content: regex }],
         }).countDocuments();
         products.longitud = longitud;
         products.products = await Product.find({
-            $or: [{ nombre: regex }, { apellido: regex }, { email: regex }],
+            $or: [{ title: regex }, { description: regex }, { content: regex }],
         })
             .limit(limit)
             .skip(startIndex);
@@ -39,7 +39,7 @@ const getProductsByPage = async (req = request, res = response) => {
         products.pages = fillPagesArr(lengthArr);
 
         products.previous = conditionPrevious(startIndex, page, limit);
-        products.previous = conditionNext(endIndex, longitud, page, limit);
+        products.next = conditionNext(endIndex, longitud, page, limit);
 
         res.json({
             ok: true,
@@ -72,24 +72,8 @@ const getProduct = async (req = request, res = response) => {
 };
 
 const createProduct = async (req = request, res = response) => {
-    const { email, pass } = req.body;
     try {
-        // Comprobar si ya existe el correo
-        const existEmail = await Product.findOne({ email });
-        if (existEmail) {
-            res.status(404).json({
-                ok: false,
-                msg: "Correo ya está registrado",
-            });
-        }
-        // Creando un nuevo producto
         const newProduct = new Product(req.body);
-
-        // Encriptar contraseña
-        const salt = bcrypt.genSaltSync();
-        newProduct.pass = bcrypt.hashSync(pass, salt);
-        newProduct.test = true;
-        // guardar producto
         await newProduct.save();
 
         res.json({
@@ -110,7 +94,18 @@ const updateProduct = async (req = request, res = response) => {
     const nuevaData = req.body;
     const id = req.params.id;
     try {
-        const newProduct = await Product.findByIdAndUpdate(id, nuevaData);
+        const searchID = await Product.findById(id);
+        if (!searchID) {
+            res.status(404).json({
+                ok: true,
+                msg: "Producto no encontrado por id",
+                client: {},
+            });
+        }
+        // sin el {new:true} te devuelve el anterior
+        const newProduct = await Product.findByIdAndUpdate(id, nuevaData, {
+            new: true,
+        });
         res.json({
             ok: true,
             msg: "Producto actualizado",

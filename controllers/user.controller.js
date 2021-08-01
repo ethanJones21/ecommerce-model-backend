@@ -25,11 +25,11 @@ const getUsersByPage = async (req = request, res = response) => {
 
     try {
         const longitud = await User.find({
-            $or: [{ apellido: regex }, { email: regex }],
+            $or: [{ name: regex }, { lasname: regex }, { email: regex }],
         }).countDocuments();
         users.longitud = longitud;
         users.users = await User.find({
-            $or: [{ nombre: regex }, { apellido: regex }, { email: regex }],
+            $or: [{ name: regex }, { lasname: regex }, { email: regex }],
         })
             .limit(limit)
             .skip(startIndex);
@@ -38,7 +38,7 @@ const getUsersByPage = async (req = request, res = response) => {
         users.pages = fillPagesArr(lengthArr);
 
         users.previous = conditionPrevious(startIndex, page, limit);
-        users.previous = conditionNext(endIndex, longitud, page, limit);
+        users.next = conditionNext(endIndex, longitud, page, limit);
 
         res.json({
             ok: true,
@@ -71,10 +71,31 @@ const getUser = async (req = request, res = response) => {
 };
 
 const updateUser = async (req = request, res = response) => {
+    const { email } = req.body;
     const nuevaData = req.body;
     const id = req.params.id;
     try {
-        const newUser = await User.findByIdAndUpdate(id, nuevaData);
+        const searchID = await User.findById(id);
+        if (!searchID) {
+            return res.status(404).json({
+                ok: true,
+                msg: "Usuario no encontrado por id",
+                client: {},
+            });
+        }
+
+        const searchEmail = await User.findOne({ email });
+        if (searchEmail) {
+            return res.status(404).json({
+                ok: true,
+                msg: "Este correo ya existe",
+                user: {},
+            });
+        }
+
+        const newUser = await User.findByIdAndUpdate(id, nuevaData, {
+            new: true,
+        });
         res.json({
             ok: true,
             msg: "Usuario actualizado",
