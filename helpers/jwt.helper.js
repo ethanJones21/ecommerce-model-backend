@@ -8,6 +8,7 @@ const createToken = (user) => {
         name,
         lastname,
         email,
+        role, //ver si es factible
         active,
         iat: moment().unix(),
         exp: moment().add(7, "days").unix(),

@@ -23,11 +23,12 @@ const registerUser = async (req, res = response) => {
         // guardar User
         await newUser.save();
 
-        const { profile, role } = user;
+        const { profile } = user;
+        // const { profile, role } = user;
 
         res.json({
             ok: true,
-            role,
+            // role,
             profile,
             token: createToken(newUser),
         });
@@ -59,11 +60,12 @@ const loginUser = async (req, res = Response) => {
             });
         }
 
-        const { profile, role } = user;
+        const { profile } = user;
+        // const { profile, role } = user;
 
         res.json({
             ok: true,
-            role,
+            // role,
             profile,
             token: createToken(user),
         });
