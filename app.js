@@ -15,7 +15,7 @@ const ProductsRoutes = require("./routes/product.routes");
 const UsersAuthRoutes = require("./auth/routes/user-auth.routes");
 const ClientsAuthRoutes = require("./auth/routes/client-auth.routes");
 
-app.use(morgan("combined"));
+app.use(morgan("tiny"));
 //// Lectura y parseo del body
 app.use(express.json());
 ////  Leer de formularios

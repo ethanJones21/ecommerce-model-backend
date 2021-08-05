@@ -23,9 +23,12 @@ const registerUser = async (req, res = response) => {
         // guardar User
         await newUser.save();
 
+        const { profile, role } = user;
+
         res.json({
             ok: true,
-            user: newUser,
+            role,
+            profile,
             token: createToken(newUser),
         });
     } catch (error) {
@@ -40,8 +43,8 @@ const registerUser = async (req, res = response) => {
 const loginUser = async (req, res = Response) => {
     const { email, pass } = req.body;
     try {
-        const searchEmail = await User.findOne({ email });
-        if (!searchEmail) {
+        const user = await User.findOne({ email });
+        if (!user) {
             return res.status(404).json({
                 ok: false,
                 msg: "Correo no encontrado",
@@ -56,9 +59,12 @@ const loginUser = async (req, res = Response) => {
             });
         }
 
+        const { profile, role } = user;
+
         res.json({
             ok: true,
-            user,
+            role,
+            profile,
             token: createToken(user),
         });
     } catch (error) {

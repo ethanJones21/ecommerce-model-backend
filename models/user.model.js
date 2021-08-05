@@ -10,7 +10,7 @@ const UserSchema = new Schema(
         pass: { type: String, required: true },
         profile: { type: String, default: "perfil.png", required: true },
         phone: { type: String, required: false },
-        rol: {
+        role: {
             type: String,
             default: "Trabajador",
             required: true,

@@ -21,6 +21,7 @@ const registerClient = async (req = request, res = response) => {
         const salt = bcrypt.genSaltSync();
         newClient.pass = bcrypt.hashSync(pass, salt);
 
+        // TODO: VER COMO CAMBIAR LA DATA EN CLIENTE TODO TIENE QUE ESTAR EN EL TOKEN
         // guardar cliente
         await newClient.save();
 
