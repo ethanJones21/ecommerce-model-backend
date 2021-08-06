@@ -16,7 +16,6 @@ const ProductSchema = new Schema(
         category: { type: Number, required: true },
         state: { type: String, default: "Edicion", required: true },
         active: { type: Boolean, default: true, required: true },
-        test: { type: Boolean, default: false, required: true },
     },
     { collection: "products" }
 );
