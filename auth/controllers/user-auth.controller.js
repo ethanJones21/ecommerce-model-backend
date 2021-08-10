@@ -3,7 +3,7 @@ const User = require("../../models/user.model");
 const { createToken } = require("../../helpers/jwt.helper");
 
 const registerUser = async (req, res = response) => {
-    const { email, pass } = req.body;
+    const { email, password } = req.body;
     try {
         // Comprobar si ya existe el correo
         const existEmail = await User.findOne({ email });
@@ -18,7 +18,7 @@ const registerUser = async (req, res = response) => {
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        newUser.pass = bcrypt.hashSync(pass, salt);
+        newUser.password = bcrypt.hashSync(password, salt);
 
         // guardar User
         await newUser.save();
@@ -42,7 +42,7 @@ const registerUser = async (req, res = response) => {
 };
 
 const loginUser = async (req, res = Response) => {
-    const { email, pass } = req.body;
+    const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -52,7 +52,7 @@ const loginUser = async (req, res = Response) => {
             });
         }
 
-        const validPass = bcrypt.compareSync(pass, user.pass);
+        const validPass = bcrypt.compareSync(password, user.password);
         if (!validPass) {
             return res.status(404).json({
                 ok: false,

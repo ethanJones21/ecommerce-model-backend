@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const { createToken } = require("../../helpers/jwt.helper");
 
 const registerClient = async (req = request, res = response) => {
-    const { email, pass } = req.body;
+    const { email, password } = req.body;
     try {
         // Comprobar si ya existe el correo
         const existeEmail = await Client.findOne({ email });
@@ -19,7 +19,7 @@ const registerClient = async (req = request, res = response) => {
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        newClient.pass = bcrypt.hashSync(pass, salt);
+        newClient.password = bcrypt.hashSync(password, salt);
 
         // TODO: VER COMO CAMBIAR LA DATA EN CLIENTE TODO TIENE QUE ESTAR EN EL TOKEN
         // guardar cliente
@@ -40,7 +40,7 @@ const registerClient = async (req = request, res = response) => {
 };
 
 const loginClient = async (req = request, res = Response) => {
-    const { email, pass } = req.body;
+    const { email, password } = req.body;
     try {
         const client = await Client.findOne({ email });
         if (!client) {
@@ -50,7 +50,7 @@ const loginClient = async (req = request, res = Response) => {
             });
         }
 
-        const validPass = bcrypt.compareSync(pass, client.pass);
+        const validPass = bcrypt.compareSync(password, client.password);
         if (!validPass) {
             res.status(404).json({
                 ok: false,

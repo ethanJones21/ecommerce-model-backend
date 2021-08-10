@@ -7,7 +7,7 @@ const ClientSchema = new Schema(
         lastname: { type: String, required: true },
         country: { type: String, required: false },
         email: { type: String, required: true },
-        pass: { type: String, required: true },
+        password: { type: String, required: true },
         profile: { type: String, default: "assets/noimage.jpg" },
         phone: { type: String, required: false },
         gender: { type: String, required: false },

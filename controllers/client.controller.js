@@ -72,7 +72,7 @@ const getClient = async (req = request, res = response) => {
 };
 
 const createClientTest = async (req = request, res = response) => {
-    const { email, pass } = req.body;
+    const { email, password } = req.body;
     try {
         // Comprobar si ya existe el correo
         const existEmail = await Client.findOne({ email });
@@ -87,13 +87,14 @@ const createClientTest = async (req = request, res = response) => {
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        newClient.pass = bcrypt.hashSync(pass, salt);
+        newClient.password = bcrypt.hashSync(password, salt);
         newClient.test = true;
         // guardar cliente
         await newClient.save();
 
         res.json({
             ok: true,
+            msg: "Cliente de prueba creado",
             client: newClient,
         });
     } catch (error) {
@@ -118,13 +119,17 @@ const updateClient = async (req = request, res = response) => {
             });
         }
 
-        const searchEmail = await Client.findOne({ email });
-        if (searchEmail) {
-            return res.status(404).json({
-                ok: true,
-                msg: "Este correo ya existe",
-                client: {},
+        if (nuevaData.email != searchID.email) {
+            const searchEmail = await Client.findOne({
+                email: nuevaData.email,
             });
+            if (searchEmail) {
+                return res.status(404).json({
+                    ok: true,
+                    msg: "Este correo ya existe",
+                    client: {},
+                });
+            }
         }
 
         const newClient = await Client.findByIdAndUpdate(id, nuevaData, {

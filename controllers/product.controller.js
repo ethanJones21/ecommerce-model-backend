@@ -26,11 +26,11 @@ const getProductsByPage = async (req = request, res = response) => {
 
     try {
         const longitud = await Product.find({
-            $or: [{ title: regex }, { description: regex }, { content: regex }],
+            $or: [{ title: regex }, { slug: regex }],
         }).countDocuments();
         products.longitud = longitud;
         products.products = await Product.find({
-            $or: [{ title: regex }, { description: regex }, { content: regex }],
+            $or: [{ title: regex }, { slug: regex }],
         })
             .limit(limit)
             .skip(startIndex);
