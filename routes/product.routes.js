@@ -10,8 +10,8 @@ const {
 
 const router = Router();
 
-const multiparty = require("connect-multiparty");
 const { validateJWT } = require("../middlewares/validate-jwt.middleware");
+const multiparty = require("connect-multiparty");
 const UPLOAD = multiparty({ uploadDir: "./uploads/products" });
 
 router.get("/paginado", validateJWT, getProductsByPage);

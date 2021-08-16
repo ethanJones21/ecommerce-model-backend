@@ -83,19 +83,19 @@ const createClientTest = async (req = request, res = response) => {
             });
         }
         // Creando un nuevo cliente
-        const newClient = new Client(req.body);
+        const client = new Client(req.body);
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        newClient.password = bcrypt.hashSync(password, salt);
-        newClient.test = true;
+        client.password = bcrypt.hashSync(password, salt);
+        client.test = true;
         // guardar cliente
-        await newClient.save();
+        await client.save();
 
         res.json({
             ok: true,
             msg: "Cliente de prueba creado",
-            client: newClient,
+            client,
         });
     } catch (error) {
         console.log(error);
@@ -107,7 +107,7 @@ const createClientTest = async (req = request, res = response) => {
 };
 
 const updateClient = async (req = request, res = response) => {
-    const nuevaData = req.body;
+    const newClient = req.body;
     const id = req.params.id;
     try {
         const searchID = await Client.findById(id);
@@ -119,9 +119,9 @@ const updateClient = async (req = request, res = response) => {
             });
         }
 
-        if (nuevaData.email != searchID.email) {
+        if (newClient.email != searchID.email) {
             const searchEmail = await Client.findOne({
-                email: nuevaData.email,
+                email: newClient.email,
             });
             if (searchEmail) {
                 return res.status(404).json({
@@ -132,13 +132,13 @@ const updateClient = async (req = request, res = response) => {
             }
         }
 
-        const newClient = await Client.findByIdAndUpdate(id, nuevaData, {
+        const client = await Client.findByIdAndUpdate(id, newClient, {
             new: true,
         });
         res.json({
             ok: true,
             msg: "Cliente actualizado",
-            client: newClient,
+            client,
         });
     } catch (error) {
         console.log(error);
@@ -151,7 +151,8 @@ const updateClient = async (req = request, res = response) => {
 
 const deactivateClient = async (req = request, res = Response) => {
     const id = req.params.id;
-    const inactive = { $set: { active: false } };
+    const { active } = req.body;
+    const inactive = { $set: { active } };
     try {
         await Cliente.findByIdAndUpdate(id, inactive);
         res.json({

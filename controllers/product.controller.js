@@ -1,11 +1,12 @@
 const { response, request } = require("express");
 const Product = require("../models/product.model");
-const bcrypt = require("bcryptjs");
+const { deleteBeforeFile } = require("../helpers/delete-file.helper");
 const {
     conditionPrevious,
     conditionNext,
     fillPagesArr,
 } = require("../helpers/pages.helper");
+const path = require("path");
 
 const getProductsByPage = async (req = request, res = response) => {
     const term = req.query.term;
@@ -72,8 +73,21 @@ const getProduct = async (req = request, res = response) => {
 };
 
 const createProduct = async (req = request, res = response) => {
+    const newProduct = new Product(req.body);
+    const uid = req.uid;
+    let path_a = req.files.cover.path;
+
     try {
-        const newProduct = new Product(req.body);
+        const newInventory = new Inventory({
+            product: newProduct.id,
+            total: newProduct.stock,
+            user: uid,
+            proveedor: "No tiene proveedor",
+        });
+        await newInventory.save();
+        // Producto
+        newProduct.cover = path_a.split("\\")[2];
+        newProduct.slug = newProduct.name.toLowerCase().replace(/ /g, "-");
         await newProduct.save();
 
         res.json({
@@ -91,7 +105,7 @@ const createProduct = async (req = request, res = response) => {
 };
 
 const updateProduct = async (req = request, res = response) => {
-    const nuevaData = req.body;
+    const newProduct_a = req.body;
     const id = req.params.id;
     try {
         const searchID = await Product.findById(id);
@@ -102,8 +116,21 @@ const updateProduct = async (req = request, res = response) => {
                 client: {},
             });
         }
+
+        let path_a = req.files.cover.path;
+        path_a = path_a.split("\\")[2];
+
+        if (path_a != searchID.cover) {
+            const pathImg = path.join(
+                __dirname,
+                `../uploads/products/${searchID.cover}`
+            );
+            await deleteBeforeFile(res, pathImg);
+            newProduct_a.cover = path_a;
+        }
+
         // sin el {new:true} te devuelve el anterior
-        const newProduct = await Product.findByIdAndUpdate(id, nuevaData, {
+        const newProduct = await Product.findByIdAndUpdate(id, newProduct_a, {
             new: true,
         });
         res.json({
@@ -122,7 +149,8 @@ const updateProduct = async (req = request, res = response) => {
 
 const deactivateProduct = async (req = request, res = Response) => {
     const id = req.params.id;
-    const inactive = { $set: { active: false } };
+    const { active } = req.body;
+    const inactive = { $set: { active } };
     try {
         await Product.findByIdAndUpdate(id, inactive);
         res.json({

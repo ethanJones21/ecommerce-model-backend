@@ -1,7 +1,7 @@
-const Usuario = require("../models/usuario.model");
+const Usuario = require("../models/user.model");
 const { response, request } = require("express");
 
-const validarADMIN_ROLE = async (req = request, res = response, next) => {
+const validateADMIN = async (req = request, res = response, next) => {
     const uid = req.uid;
 
     try {
@@ -14,7 +14,7 @@ const validarADMIN_ROLE = async (req = request, res = response, next) => {
             });
         }
 
-        if (usuarioDB.role !== "ADMIN_ROLE") {
+        if (usuarioDB.role !== "ADMIN") {
             return res.status(403).json({
                 ok: false,
                 msg: "No tiene privilegios para hacer eso",
@@ -31,11 +31,7 @@ const validarADMIN_ROLE = async (req = request, res = response, next) => {
     }
 };
 
-const validarTrabajador_o_ADMIN_ROLE = async (
-    req = request,
-    res = response,
-    next
-) => {
+const validateWORKER_or_ADMIN = async (req = request, res = response, next) => {
     const uid = req.uid;
 
     try {
@@ -48,7 +44,7 @@ const validarTrabajador_o_ADMIN_ROLE = async (
             });
         }
 
-        if (usuarioDB.role === "TRABAJADOR" || "ADMIN_ROLE") {
+        if (usuarioDB.role === "USER" || "ADMIN") {
             return res.status(403).json({
                 ok: false,
                 msg: "No tiene privilegios para hacer eso",
@@ -65,7 +61,7 @@ const validarTrabajador_o_ADMIN_ROLE = async (
     }
 };
 
-const validarADMIN_ROLE_o_MismoUsuario = async (
+const validateADMIN_or_SAME_USER = async (
     req = request,
     res = response,
     next
@@ -83,7 +79,7 @@ const validarADMIN_ROLE_o_MismoUsuario = async (
             });
         }
 
-        if (usuarioDB.role === "ADMIN_ROLE" || uid === id) {
+        if (usuarioDB.role === "ADMIN" || uid === id) {
             next();
         } else {
             return res.status(403).json({
@@ -101,7 +97,7 @@ const validarADMIN_ROLE_o_MismoUsuario = async (
 };
 
 module.exports = {
-    validarADMIN_ROLE,
-    validarTrabajador_o_ADMIN_ROLE,
-    validarADMIN_ROLE_o_MismoUsuario,
+    validateADMIN,
+    validateWORKER_or_ADMIN,
+    validateADMIN_or_SAME_USER,
 };

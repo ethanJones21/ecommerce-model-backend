@@ -71,7 +71,7 @@ const getUser = async (req = request, res = response) => {
 };
 
 const updateUser = async (req = request, res = response) => {
-    const nuevaData = req.body;
+    const newUser = req.body;
     const id = req.params.id;
     try {
         const searchID = await User.findById(id);
@@ -83,8 +83,8 @@ const updateUser = async (req = request, res = response) => {
             });
         }
 
-        if (nuevaData.email != searchId.email) {
-            const searchEmail = await User.findOne({ email: nuevaData.email });
+        if (newUser.email != searchId.email) {
+            const searchEmail = await User.findOne({ email: newUser.email });
             if (searchEmail) {
                 return res.status(404).json({
                     ok: true,
@@ -94,13 +94,13 @@ const updateUser = async (req = request, res = response) => {
             }
         }
 
-        const newUser = await User.findByIdAndUpdate(id, nuevaData, {
+        const user = await User.findByIdAndUpdate(id, newUser, {
             new: true,
         });
         res.json({
             ok: true,
             msg: "Usuario actualizado",
-            user: newUser,
+            user,
         });
     } catch (error) {
         console.log(error);

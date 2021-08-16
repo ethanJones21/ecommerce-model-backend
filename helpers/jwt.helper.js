@@ -2,9 +2,9 @@ const jwt = require("jwt-simple");
 const moment = require("moment");
 
 const createToken = (user) => {
-    const { uid, name, lastname, email, role, active } = user;
+    const { _id, name, lastname, email, role, active } = user;
     const payload = {
-        uid,
+        uid: _id,
         name,
         lastname,
         email,
