@@ -5,7 +5,7 @@ const CouponSchema = new Schema({
     code: { type: String, required: true },
     type: { type: String, required: true }, //porcentaje o precio fijo
     value: { type: Number, required: true },
-    limit: { type: String, required: true },
+    limit: { type: Number, required: true },
     createdAt: { type: Date, required: true, default: Date.now },
 });
 
