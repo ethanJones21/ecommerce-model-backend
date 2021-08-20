@@ -14,6 +14,7 @@ const ProductsRoutes = require("./routes/product.routes");
 const InventoriesRoutes = require("./routes/inventory.routes");
 const UploadsRoutes = require("./routes/uploads.routes");
 const CouponsRoutes = require("./routes/coupon.routes");
+const ConfigsRoutes = require("./routes/config.routes");
 
 const UsersAuthRoutes = require("./auth/routes/user-auth.routes");
 const ClientsAuthRoutes = require("./auth/routes/client-auth.routes");
@@ -36,6 +37,7 @@ app.use("/products", ProductsRoutes);
 app.use("/inventories", InventoriesRoutes);
 app.use("/uploads", UploadsRoutes);
 app.use("/coupons", CouponsRoutes);
+app.use("/configs", ConfigsRoutes);
 
 // AUTH
 app.use("/auth", ClientsAuthRoutes);
