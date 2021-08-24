@@ -15,6 +15,8 @@ const InventoriesRoutes = require("./routes/inventory.routes");
 const UploadsRoutes = require("./routes/uploads.routes");
 const CouponsRoutes = require("./routes/coupon.routes");
 const ConfigsRoutes = require("./routes/config.routes");
+const VarietiesRoutes = require("./routes/variety.routes");
+const GaleryRoutes = require("./routes/galery.routes");
 
 const UsersAuthRoutes = require("./auth/routes/user-auth.routes");
 const ClientsAuthRoutes = require("./auth/routes/client-auth.routes");
@@ -38,6 +40,8 @@ app.use("/inventories", InventoriesRoutes);
 app.use("/uploads", UploadsRoutes);
 app.use("/coupons", CouponsRoutes);
 app.use("/configs", ConfigsRoutes);
+app.use("/varieties", VarietiesRoutes);
+app.use("/galery", GaleryRoutes);
 
 // AUTH
 app.use("/auth", ClientsAuthRoutes);

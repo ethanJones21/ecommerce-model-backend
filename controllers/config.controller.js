@@ -4,8 +4,9 @@ const path = require("path");
 const { deleteBeforeFile } = require("../helpers/delete-file.helper");
 
 const getConfig = async (req = request, res = response) => {
+    const id = "611e9e3510884a2a6a003dbc";
     try {
-        const config = await Config.findById("611e9e3510884a2a6a003dbc");
+        const config = await Config.findById(id);
         res.json({
             ok: true,
             config,
