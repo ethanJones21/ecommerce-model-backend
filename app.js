@@ -6,6 +6,21 @@ const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
 
+const server = require("http").createServer(app);
+
+const io = require("socket.io")(server, {
+    cors: { origin: "*" },
+});
+io.on("connection", (client) => {
+    client.on("deleteProductOfCart", (data) => {
+        io.emit("deleteProduct", data);
+    });
+    client.on("addProductToCart", (data) => {
+        io.emit("newCart", data);
+    });
+    //   client.on('disconnect', () => { /* … */ });
+});
+
 const { dbConnection } = require("./database/config");
 
 const ClientsRoutes = require("./routes/client.routes");
@@ -17,6 +32,7 @@ const CouponsRoutes = require("./routes/coupon.routes");
 const ConfigsRoutes = require("./routes/config.routes");
 const VarietiesRoutes = require("./routes/variety.routes");
 const GaleryRoutes = require("./routes/galery.routes");
+const CartRoutes = require("./routes/cart.routes");
 
 const UsersAuthRoutes = require("./auth/routes/user-auth.routes");
 const ClientsAuthRoutes = require("./auth/routes/client-auth.routes");
@@ -42,6 +58,7 @@ app.use("/coupons", CouponsRoutes);
 app.use("/configs", ConfigsRoutes);
 app.use("/varieties", VarietiesRoutes);
 app.use("/galery", GaleryRoutes);
+app.use("/cart", CartRoutes);
 
 // AUTH
 app.use("/auth", ClientsAuthRoutes);
@@ -52,6 +69,6 @@ app.use("/auth-user", UsersAuthRoutes);
 //     res.sendFile( path.resolve( __dirname, 'public/index.html' ) );
 // });
 
-app.listen(process.env.MONGO_PORT, () => {
+server.listen(process.env.MONGO_PORT, () => {
     console.log("Servidor corriendo en puerto " + process.env.MONGO_PORT);
 });
