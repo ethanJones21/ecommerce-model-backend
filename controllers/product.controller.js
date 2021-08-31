@@ -1,5 +1,6 @@
 const { response, request } = require("express");
 const Product = require("../models/product.model");
+const Inventory = require("../models/inventory.model");
 const { deleteBeforeFile } = require("../helpers/delete-file.helper");
 const {
     conditionPrevious,
@@ -27,11 +28,11 @@ const getProductsByPage = async (req = request, res = response) => {
 
     try {
         const longitud = await Product.find({
-            $or: [{ title: regex }, { slug: regex }],
+            $or: [{ name: regex }, { category: regex }],
         }).countDocuments();
         products.longitud = longitud;
         products.products = await Product.find({
-            $or: [{ title: regex }, { slug: regex }],
+            $or: [{ name: regex }, { category: regex }],
         })
             .limit(limit)
             .skip(startIndex);

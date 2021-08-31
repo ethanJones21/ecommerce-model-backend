@@ -20,6 +20,23 @@ const getConfig = async (req = request, res = response) => {
     }
 };
 
+const getCategories = async (req = request, res = response) => {
+    const id = "611e9e3510884a2a6a003dbc";
+    try {
+        const { categories } = await Config.findById(id);
+        res.json({
+            ok: true,
+            categories,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error inesperado... revisar logs",
+        });
+    }
+};
+
 const updateConfig = async (req = request, res = response) => {
     const newConfig_a = req.body;
     const id = "611e9e3510884a2a6a003dbc";
@@ -69,4 +86,5 @@ const updateConfig = async (req = request, res = response) => {
 module.exports = {
     getConfig,
     updateConfig,
+    getCategories,
 };

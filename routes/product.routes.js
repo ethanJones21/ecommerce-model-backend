@@ -14,8 +14,8 @@ const { validateJWT } = require("../middlewares/validate-jwt.middleware");
 const multiparty = require("connect-multiparty");
 const UPLOAD = multiparty({ uploadDir: "./uploads/products" });
 
-router.get("/paginado", validateJWT, getProductsByPage);
-router.get("/:id", validateJWT, getProduct);
+router.get("/paginado", getProductsByPage);
+router.get("/:id", getProduct);
 
 router.post("/", [validateJWT, UPLOAD], createProduct);
 
