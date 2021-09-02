@@ -6,6 +6,7 @@ const {
     updateProduct,
     deactivateProduct,
     createProduct,
+    getProductBySlug,
 } = require("../controllers/product.controller");
 
 const router = Router();
@@ -15,7 +16,8 @@ const multiparty = require("connect-multiparty");
 const UPLOAD = multiparty({ uploadDir: "./uploads/products" });
 
 router.get("/paginado", getProductsByPage);
-router.get("/:id", getProduct);
+router.get("/id/:id", validateJWT, getProduct);
+router.get("/:slug", getProductBySlug);
 
 router.post("/", [validateJWT, UPLOAD], createProduct);
 

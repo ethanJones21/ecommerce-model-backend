@@ -32,9 +32,15 @@ const updateGalery = async (req = request, res = response) => {
                 name: gal.path.split("\\")[2],
             };
         });
-        const newProduct = await Product.findByIdAndUpdate(productID, {
-            $push: { galery: galeryArr },
-        });
+        const newProduct = await Product.findByIdAndUpdate(
+            productID,
+            {
+                $push: { galery: galeryArr },
+            },
+            {
+                new: true,
+            }
+        );
 
         res.json({
             ok: true,

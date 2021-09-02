@@ -25,9 +25,11 @@ const registerClient = async (req = request, res = response) => {
         // guardar cliente
         await newClient.save();
 
+        const { profile } = newClient;
+
         res.json({
             ok: true,
-            user: newClient,
+            profile,
             token: createToken(newClient),
         });
     } catch (error) {
@@ -39,7 +41,7 @@ const registerClient = async (req = request, res = response) => {
     }
 };
 
-const loginClient = async (req = request, res = Response) => {
+const loginClient = async (req = request, res = response) => {
     const { email, password } = req.body;
     try {
         const client = await Client.findOne({ email });
@@ -57,10 +59,11 @@ const loginClient = async (req = request, res = Response) => {
                 msg: "Contraseña incorrecta",
             });
         }
+        const { profile } = client;
 
         res.json({
             ok: true,
-            user: client,
+            profile,
             token: createToken(client),
         });
     } catch (error) {

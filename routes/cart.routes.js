@@ -5,12 +5,13 @@ const {
     addProductToCart,
     deleteProductOfCart,
 } = require("../controllers/cart.controller");
+const { validateJWT } = require("../middlewares/validate-jwt.middleware");
 
 const router = Router();
 
-router.get("/:cartID", getCart);
+router.get("/", validateJWT, getCart);
 
-router.put("/:clientID/:productID", addProductToCart);
+router.put("/:productID", validateJWT, addProductToCart);
 
 router.delete("/:cartID/:productID", deleteProductOfCart);
 

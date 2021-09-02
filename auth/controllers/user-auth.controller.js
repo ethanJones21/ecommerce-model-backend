@@ -23,12 +23,11 @@ const registerUser = async (req, res = response) => {
         // guardar User
         await newUser.save();
 
-        const { profile } = user;
+        const { profile } = newUser;
         // const { profile, role } = user;
 
         res.json({
             ok: true,
-            // role,
             profile,
             token: createToken(newUser),
         });
@@ -41,7 +40,7 @@ const registerUser = async (req, res = response) => {
     }
 };
 
-const loginUser = async (req, res = Response) => {
+const loginUser = async (req, res = response) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
@@ -61,11 +60,9 @@ const loginUser = async (req, res = Response) => {
         }
 
         const { profile } = user;
-        // const { profile, role } = user;
 
         res.json({
             ok: true,
-            // role,
             profile,
             token: createToken(user),
         });

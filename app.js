@@ -12,11 +12,13 @@ const io = require("socket.io")(server, {
     cors: { origin: "*" },
 });
 io.on("connection", (client) => {
-    client.on("deleteProductOfCart", (data) => {
-        io.emit("deleteProduct", data);
+    client.on("deleteProductOfCart", (cart) => {
+        console.log(cart);
+        io.emit("deleteProduct", cart);
     });
-    client.on("addProductToCart", (data) => {
-        io.emit("newCart", data);
+    client.on("addProductToCart", (cart) => {
+        console.log(cart);
+        io.emit("newCart", cart);
     });
     //   client.on('disconnect', () => { /* … */ });
 });
