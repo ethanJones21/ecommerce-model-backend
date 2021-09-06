@@ -4,9 +4,9 @@ const path = require("path");
 const { deleteBeforeFile } = require("../helpers/delete-file.helper");
 
 const getConfig = async (req = request, res = response) => {
-    const id = "611e9e3510884a2a6a003dbc";
+    const idConfig = "611e9e3510884a2a6a003dbc";
     try {
-        const config = await Config.findById(id);
+        const config = await Config.findById(idConfig);
         res.json({
             ok: true,
             config,
@@ -20,10 +20,27 @@ const getConfig = async (req = request, res = response) => {
     }
 };
 
-const getCategories = async (req = request, res = response) => {
-    const id = "611e9e3510884a2a6a003dbc";
+const getDelivery = async (req = request, res = response) => {
+    const idConfig = "611e9e3510884a2a6a003dbc";
     try {
-        const { categories } = await Config.findById(id);
+        const { delivery } = await Config.findById(idConfig);
+        res.json({
+            ok: true,
+            delivery,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error inesperado... revisar logs",
+        });
+    }
+};
+
+const getCategories = async (req = request, res = response) => {
+    const idConfig = "611e9e3510884a2a6a003dbc";
+    try {
+        const { categories } = await Config.findById(idConfig);
         res.json({
             ok: true,
             categories,
@@ -38,10 +55,10 @@ const getCategories = async (req = request, res = response) => {
 };
 
 const updateConfig = async (req = request, res = response) => {
+    const idConfig = "611e9e3510884a2a6a003dbc";
     const newConfig_a = req.body;
-    const id = "611e9e3510884a2a6a003dbc";
     try {
-        const searchID = await Config.findById(id);
+        const searchID = await Config.findById(idConfig);
         if (!searchID) {
             return res.status(404).json({
                 ok: true,
@@ -85,6 +102,7 @@ const updateConfig = async (req = request, res = response) => {
 
 module.exports = {
     getConfig,
-    updateConfig,
+    getDelivery,
     getCategories,
+    updateConfig,
 };

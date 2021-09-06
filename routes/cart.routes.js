@@ -9,9 +9,9 @@ const { validateJWT } = require("../middlewares/validate-jwt.middleware");
 
 const router = Router();
 
-router.get("/", validateJWT, getCart);
+router.get("/:cartID", getCart);
 
-router.put("/:productID", validateJWT, addProductToCart);
+router.put("/:cartID/:productID", addProductToCart);
 
 router.delete("/:cartID/:productID", deleteProductOfCart);
 

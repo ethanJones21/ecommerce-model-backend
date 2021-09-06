@@ -1,20 +1,26 @@
 const { response, request } = require("express");
 const Cart = require("../models/cart.model");
 
+// .populate({
+//     path: "products",
+//     populate: {
+//         path: "product",
+//     },
+// });
+
 const getCart = async (req = request, res = response) => {
-    const client = req.uid;
-    console.log(client);
+    const cartID = req.params.cartID;
     try {
-        const cart = await Cart.find({ client, state: "Edicion" }).populate(
+        const cart = await Cart.findById(cartID).populate(
             "products.product",
             "name cover subtotal price category stars"
         );
-        // .populate({
-        //     path: "products",
-        //     populate: {
-        //         path: "product",
-        //     },
-        // });
+        if (!cart) {
+            return res.status(404).json({
+                ok: false,
+                cart: {},
+            });
+        }
         res.json({
             ok: true,
             cart,
@@ -29,14 +35,13 @@ const getCart = async (req = request, res = response) => {
 };
 
 const addProductToCart = async (req = request, res = response) => {
-    const client = req.uid;
+    const cartID = req.params.cartID;
     const addProduct = req.body;
-    addProduct.client = client;
     try {
         let newCart = {};
-        const existCart = await Cart.find({ client });
-        if (existCart.length > 0) {
-            const { _id } = existCart[0];
+        if (cartID != "123") {
+            const existCart = await Cart.findById(cartID);
+            const { _id } = existCart;
             newCart = await Cart.findByIdAndUpdate(
                 _id,
                 {
@@ -53,7 +58,7 @@ const addProductToCart = async (req = request, res = response) => {
 
         res.json({
             ok: true,
-            msg: "Producto agregado al carrito",
+            msg: "Se agrego tu producto al carrito",
             cart: newCart,
         });
     } catch (error) {

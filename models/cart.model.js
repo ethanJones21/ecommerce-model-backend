@@ -4,7 +4,7 @@ const { Schema, model } = require("mongoose");
 const CartSchema = new Schema(
     {
         state: { type: String, required: true, default: "Edicion" },
-        client: { type: Schema.Types.ObjectId, ref: "Client", required: true },
+        client: { type: Schema.Types.ObjectId, ref: "Client" },
         products: [
             // si lo pongo asi se crea automaticamente un id
             {

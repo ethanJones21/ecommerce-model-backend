@@ -8,6 +8,7 @@ const ConfigSchema = new Schema(
         logo: { type: String, required: true },
         serie: { type: String, required: true },
         correlative: { type: String, required: true },
+        delivery: [{ type: Object, required: true }],
     },
     { collection: "configs" }
 );
