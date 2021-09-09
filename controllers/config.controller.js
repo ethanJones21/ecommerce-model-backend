@@ -4,7 +4,7 @@ const path = require("path");
 const { deleteBeforeFile } = require("../helpers/delete-file.helper");
 
 const getConfig = async (req = request, res = response) => {
-    const idConfig = "611e9e3510884a2a6a003dbc";
+    const idConfig = process.env.IDCONFIG;
     try {
         const config = await Config.findById(idConfig);
         res.json({
@@ -21,7 +21,7 @@ const getConfig = async (req = request, res = response) => {
 };
 
 const getDelivery = async (req = request, res = response) => {
-    const idConfig = "611e9e3510884a2a6a003dbc";
+    const idConfig = process.env.IDCONFIG;
     try {
         const { delivery } = await Config.findById(idConfig);
         res.json({
@@ -38,7 +38,7 @@ const getDelivery = async (req = request, res = response) => {
 };
 
 const getCategories = async (req = request, res = response) => {
-    const idConfig = "611e9e3510884a2a6a003dbc";
+    const idConfig = process.env.IDCONFIG;
     try {
         const { categories } = await Config.findById(idConfig);
         res.json({
@@ -55,7 +55,7 @@ const getCategories = async (req = request, res = response) => {
 };
 
 const updateConfig = async (req = request, res = response) => {
-    const idConfig = "611e9e3510884a2a6a003dbc";
+    const idConfig = process.env.IDCONFIG;
     const newConfig_a = req.body;
     try {
         const searchID = await Config.findById(idConfig);

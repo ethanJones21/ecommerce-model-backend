@@ -35,6 +35,7 @@ const ConfigsRoutes = require("./routes/config.routes");
 const VarietiesRoutes = require("./routes/variety.routes");
 const GaleryRoutes = require("./routes/galery.routes");
 const CartRoutes = require("./routes/cart.routes");
+const SaleRoutes = require("./routes/sale.routes");
 
 const UsersAuthRoutes = require("./auth/routes/user-auth.routes");
 const ClientsAuthRoutes = require("./auth/routes/client-auth.routes");
@@ -61,6 +62,7 @@ app.use("/configs", ConfigsRoutes);
 app.use("/varieties", VarietiesRoutes);
 app.use("/galery", GaleryRoutes);
 app.use("/cart", CartRoutes);
+app.use("/sales", SaleRoutes);
 
 // AUTH
 app.use("/auth", ClientsAuthRoutes);
