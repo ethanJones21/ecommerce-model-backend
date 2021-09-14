@@ -17,6 +17,7 @@ const ProductSchema = new Schema(
         category: { type: String, required: true },
         state: { type: String, default: "Edicion", required: true },
         active: { type: Boolean, default: true, required: true },
+        wishlist: { type: Boolean, default: false, required: true },
         createdAt: { type: Date, default: Date.now, required: true },
     },
     { collection: "products" }
