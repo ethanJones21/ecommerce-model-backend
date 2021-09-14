@@ -20,24 +20,37 @@ io.on("connection", (client) => {
 
 const { dbConnection } = require("./database/config");
 
-const ClientsRoutes = require("./routes/client.routes");
-const UsersRoutes = require("./routes/user.routes");
-const ProductsRoutes = require("./routes/product.routes");
-const InventoriesRoutes = require("./routes/inventory.routes");
-const UploadsRoutes = require("./routes/uploads.routes");
-const CouponsRoutes = require("./routes/coupon.routes");
-const ConfigsRoutes = require("./routes/config.routes");
-const VarietiesRoutes = require("./routes/variety.routes");
-const GaleryRoutes = require("./routes/galery.routes");
-const CartRoutes = require("./routes/cart.routes");
-const SaleRoutes = require("./routes/sale.routes");
-const WishListRoutes = require("./routes/wishlist.routes");
-const ReviewRoutes = require("./routes/review.routes");
-const MessageRoutes = require("./routes/message.routes");
-const AddressRoutes = require("./routes/address.routes");
+// Admin
+const {
+    AdminClientRoutes,
+    AdminConfigRoutes,
+    AdminUserRoutes,
+} = require("./src/app/admin/admin.module");
 
-const UsersAuthRoutes = require("./auth/routes/user-auth.routes");
-const ClientsAuthRoutes = require("./auth/routes/client-auth.routes");
+// User
+const {
+    UserAddressRoutes,
+    UserCouponRoutes,
+    UserGaleryRoutes,
+    UserInventoryRoutes,
+    UserMessageRoutes,
+    UserProductRoutes,
+    UserSaleRoutes,
+    UserUploadRoutes,
+    UserRoutes,
+    UserVarietyRoutes,
+} = require("./src/app/user/user.module");
+
+// Client
+const {
+    ClientAddressRoutes,
+    ClientCartRoutes,
+    ClientRoutes,
+    ClientConfigRoutes,
+    ClientMessageRoutes,
+    ClientReviewRoutes,
+    ClientWishListRoutes,
+} = require("./src/app/client/client.module");
 
 app.use(morgan("tiny"));
 //// Lectura y parseo del body
@@ -51,25 +64,35 @@ dbConnection();
 // app.use(CORS);
 app.use(cors());
 
-app.use("/clients", ClientsRoutes);
-app.use("/users", UsersRoutes);
-app.use("/products", ProductsRoutes);
-app.use("/inventories", InventoriesRoutes);
-app.use("/uploads", UploadsRoutes);
-app.use("/coupons", CouponsRoutes);
-app.use("/configs", ConfigsRoutes);
-app.use("/varieties", VarietiesRoutes);
-app.use("/galery", GaleryRoutes);
-app.use("/cart", CartRoutes);
-app.use("/sales", SaleRoutes);
-app.use("/wishlist", WishListRoutes);
-app.use("/reviews", ReviewRoutes);
-app.use("/messages", MessageRoutes);
-app.use("/addresses", AddressRoutes);
+// Admin
+app.use("/admins/clients", AdminClientRoutes);
+app.use("/admins/configs", AdminConfigRoutes);
+app.use("/admins/users", AdminUserRoutes);
 
-// AUTH
-app.use("/auth", ClientsAuthRoutes);
-app.use("/auth-user", UsersAuthRoutes);
+// User
+app.use("/users/addresses", UserAddressRoutes);
+app.use("/users/coupons", UserCouponRoutes);
+app.use("/users/galery", UserGaleryRoutes);
+app.use("/users/inventories", UserInventoryRoutes);
+app.use("/users/messages", UserMessageRoutes);
+app.use("/users/products", UserProductRoutes);
+app.use("/users/sales", UserSaleRoutes);
+app.use("/users/uploads", UserUploadRoutes);
+app.use("/users", UserRoutes);
+app.use("/users/varieties", UserVarietyRoutes);
+
+// Client
+app.use("/clients/addresses", ClientAddressRoutes);
+app.use("/clients/cart", ClientCartRoutes);
+app.use("/clients", ClientRoutes);
+app.use("/clients/config", ClientConfigRoutes);
+app.use("/clients/messages", ClientMessageRoutes);
+app.use("/clients/reviews", ClientReviewRoutes);
+app.use("/clients/wishlist", ClientWishListRoutes);
+
+// // AUTH
+// app.use("/auth", ClientsAuthRoutes);
+// app.use("/auth-user", UsersAuthRoutes);
 
 // TODO: Lo último PARA PRODUCCION
 // app.get('*', (req, res) => {
