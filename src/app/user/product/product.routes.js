@@ -6,7 +6,6 @@ const {
     updateProduct,
     deactivateProduct,
     createProduct,
-    getProductBySlug,
 } = require("./product.controller");
 
 const router = Router();
@@ -15,16 +14,14 @@ const {
     validateJWT,
 } = require("../../../shared/middlewares/validate-jwt.middleware");
 const multiparty = require("connect-multiparty");
-const UPLOAD = multiparty({ uploadDir: "../../../../uploads/products" });
+const UPLOAD = multiparty({ uploadDir: "../../../uploads/products" });
 
-router.get("/paginado", getProductsByPage);
-// aqui cambie ya no id/:id sino solo id
-router.get("/:id", validateJWT, getProduct);
-router.get("/:slug", getProductBySlug);
+router.get("/paginado", [validateJWT, validateUSER], getProductsByPage);
+router.get("/:id", [validateJWT, validateUSER], getProduct);
 
-router.post("/", [validateJWT, UPLOAD], createProduct);
+router.post("/", [validateJWT, validateUSER, UPLOAD], createProduct);
 
-router.put("/:id", [validateJWT, UPLOAD], updateProduct);
-router.patch("/:id", validateJWT, deactivateProduct);
+router.put("/:id", [validateJWT, validateUSER, UPLOAD], updateProduct);
+router.patch("/:id", [validateJWT, validateUSER], deactivateProduct);
 
 module.exports = router;

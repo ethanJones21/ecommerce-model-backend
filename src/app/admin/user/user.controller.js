@@ -4,7 +4,7 @@ const {
     conditionPrevious,
     conditionNext,
     fillPagesArr,
-} = require("../helpers/pages.helper");
+} = require("../../../shared/helpers/pages.helper");
 
 const getUsersByPage = async (req = request, res = response) => {
     const term = req.query.term;

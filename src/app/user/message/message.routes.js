@@ -12,9 +12,9 @@ const {
 
 const router = Router();
 
-router.get("/paginado", validateJWT, getMessagesByPage);
-router.get("/:id", getMessage);
+router.get("/paginado", [validateJWT, validateUSER], getMessagesByPage);
+router.get("/:id", [validateJWT, validateUSER], getMessage);
 
-router.patch("/:id", validateJWT, responseMessage);
+router.patch("/:id", [validateJWT, validateUSER], responseMessage);
 
 module.exports = router;

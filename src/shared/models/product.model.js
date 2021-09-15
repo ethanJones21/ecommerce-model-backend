@@ -1,5 +1,5 @@
 "use strict";
-const { Schema, model } = require("mongoose");
+const { Schema, model, models } = require("mongoose");
 
 const ProductSchema = new Schema(
     {
@@ -29,4 +29,4 @@ ProductSchema.method("toJSON", function () {
     return object;
 });
 
-module.exports = model("Product", ProductSchema);
+module.exports = models.Product || model("Product", ProductSchema);

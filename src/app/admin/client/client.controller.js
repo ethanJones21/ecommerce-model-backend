@@ -71,6 +71,49 @@ const getClient = async (req = request, res = response) => {
     }
 };
 
+const updateClientTest = async (req = request, res = response) => {
+    const newClient = req.body;
+    const id = req.params.id;
+    try {
+        const existClient = await Client.findOne({ _id: id, test: true });
+        if (!existClient) {
+            return res.status(404).json({
+                ok: true,
+                msg: "Cliente no encontrado por id",
+                client: {},
+            });
+        }
+
+        if (newClient.email != existClient.email) {
+            const searchEmail = await Client.findOne({
+                email: newClient.email,
+            });
+            if (searchEmail) {
+                return res.status(404).json({
+                    ok: true,
+                    msg: "Este correo ya existe",
+                    client: {},
+                });
+            }
+        }
+
+        const client = await Client.findByIdAndUpdate(id, newClient, {
+            new: true,
+        });
+        res.json({
+            ok: true,
+            msg: "Cliente de prueba actualizado",
+            client,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error inesperado... revisar logs",
+        });
+    }
+};
+
 const createClientTest = async (req = request, res = response) => {
     const { email, password } = req.body;
     try {
@@ -128,6 +171,7 @@ const deactivateClient = async (req = request, res = Response) => {
 module.exports = {
     getClientsByPage,
     getClient,
+    updateClientTest,
     createClientTest,
     deactivateClient,
 };

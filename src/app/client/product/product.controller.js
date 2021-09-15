@@ -53,23 +53,6 @@ const getProductsByPage = async (req = request, res = response) => {
     }
 };
 
-const getProduct = async (req = request, res = response) => {
-    const id = req.params.id;
-    try {
-        const product = await Product.findById(id);
-        res.json({
-            ok: true,
-            product,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: "Error inesperado... revisar logs",
-        });
-    }
-};
-
 const getProductBySlug = async (req = request, res = response) => {
     const slug = req.params.slug;
     try {
@@ -89,6 +72,5 @@ const getProductBySlug = async (req = request, res = response) => {
 
 module.exports = {
     getProductsByPage,
-    getProduct,
     getProductBySlug,
 };

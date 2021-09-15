@@ -17,7 +17,7 @@ const validateADMIN = async (req = request, res = response, next) => {
         if (usuarioDB.role !== "ADMIN") {
             return res.status(403).json({
                 ok: false,
-                msg: "No tiene privilegios para hacer eso",
+                msg: "Necesita privilegios de administrador",
             });
         }
 
@@ -31,7 +31,7 @@ const validateADMIN = async (req = request, res = response, next) => {
     }
 };
 
-const validateWORKER_or_ADMIN = async (req = request, res = response, next) => {
+const validateUSER = async (req = request, res = response, next) => {
     const uid = req.uid;
 
     try {
@@ -44,10 +44,10 @@ const validateWORKER_or_ADMIN = async (req = request, res = response, next) => {
             });
         }
 
-        if (usuarioDB.role === "USER" || "ADMIN") {
+        if (usuarioDB.role === "USER") {
             return res.status(403).json({
                 ok: false,
-                msg: "No tiene privilegios para hacer eso",
+                msg: "No tiene privilegios de usuario",
             });
         }
 
@@ -98,6 +98,6 @@ const validateADMIN_or_SAME_USER = async (
 
 module.exports = {
     validateADMIN,
-    validateWORKER_or_ADMIN,
+    validateUSER,
     validateADMIN_or_SAME_USER,
 };

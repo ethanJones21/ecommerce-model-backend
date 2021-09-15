@@ -5,13 +5,13 @@ const { request, response } = require("express");
 const getFile = (req = request, res = response) => {
     const model = req.params.model;
     const img = req.params.img;
-    const pathImg = path.join(__dirname, `../../../../uploads/${model}/${img}`);
+    const pathImg = path.join(__dirname, `../../uploads/${model}/${img}`);
 
     // imagen por defecto
     if (fs.existsSync(pathImg)) {
         res.sendFile(pathImg);
     } else {
-        const pathImg = path.join(__dirname, `../../../../uploads/default.jpg`);
+        const pathImg = path.join(__dirname, `../../uploads/default.jpg`);
         res.sendFile(pathImg);
     }
 

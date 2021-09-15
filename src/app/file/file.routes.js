@@ -1,6 +1,6 @@
 const { Router } = require("express");
 
-const { getFile } = require("./uploads.controller");
+const { getFile } = require("./file.controller");
 
 const router = Router();
 

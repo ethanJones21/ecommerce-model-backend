@@ -75,23 +75,6 @@ const getProduct = async (req = request, res = response) => {
     }
 };
 
-const getProductBySlug = async (req = request, res = response) => {
-    const slug = req.params.slug;
-    try {
-        const product = await Product.findOne({ slug });
-        res.json({
-            ok: true,
-            product,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: "Error inesperado... revisar logs",
-        });
-    }
-};
-
 const createProduct = async (req = request, res = response) => {
     const newProduct = new Product(req.body);
     const uid = req.uid;
@@ -189,7 +172,6 @@ const deactivateProduct = async (req = request, res = Response) => {
 module.exports = {
     getProductsByPage,
     getProduct,
-    getProductBySlug,
     createProduct,
     updateProduct,
     deactivateProduct,

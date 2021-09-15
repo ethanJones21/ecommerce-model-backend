@@ -18,7 +18,7 @@ io.on("connection", (client) => {
     //   client.on('disconnect', () => { /* … */ });
 });
 
-const { dbConnection } = require("./database/config");
+const { dbConnection } = require("./src/database/config");
 
 // Admin
 const {
@@ -36,7 +36,6 @@ const {
     UserMessageRoutes,
     UserProductRoutes,
     UserSaleRoutes,
-    UserUploadRoutes,
     UserRoutes,
     UserVarietyRoutes,
 } = require("./src/app/user/user.module");
@@ -51,6 +50,9 @@ const {
     ClientReviewRoutes,
     ClientWishListRoutes,
 } = require("./src/app/client/client.module");
+
+// File
+const FileRoutes = require("./src/app/file/file.routes");
 
 app.use(morgan("tiny"));
 //// Lectura y parseo del body
@@ -77,7 +79,6 @@ app.use("/users/inventories", UserInventoryRoutes);
 app.use("/users/messages", UserMessageRoutes);
 app.use("/users/products", UserProductRoutes);
 app.use("/users/sales", UserSaleRoutes);
-app.use("/users/uploads", UserUploadRoutes);
 app.use("/users", UserRoutes);
 app.use("/users/varieties", UserVarietyRoutes);
 
@@ -89,6 +90,9 @@ app.use("/clients/config", ClientConfigRoutes);
 app.use("/clients/messages", ClientMessageRoutes);
 app.use("/clients/reviews", ClientReviewRoutes);
 app.use("/clients/wishlist", ClientWishListRoutes);
+
+// File
+app.use("/file", FileRoutes);
 
 // // AUTH
 // app.use("/auth", ClientsAuthRoutes);

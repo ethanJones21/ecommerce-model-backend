@@ -75,7 +75,7 @@ const deleteImgOfGalery = async (req = request, res = response) => {
 
         const pathImg = path.join(
             __dirname,
-            `../uploads/products/${galery[indice].name}`
+            `../../../uploads/products/${galery[indice].name}`
         );
         await deleteBeforeFile(res, pathImg);
 

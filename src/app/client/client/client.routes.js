@@ -6,7 +6,9 @@ const {
     updateClient,
 } = require("./client.controller");
 
-const { validateJWT } = require("../../middlewares/validate-jwt.middleware");
+const {
+    validateJWT,
+} = require("../../../shared/middlewares/validate-jwt.middleware");
 
 const router = Router();
 
