@@ -53,6 +53,7 @@ const {
 
 // File
 const FileRoutes = require("./src/app/file/file.routes");
+const SidebarRoutes = require("./src/app/sidebar/sidebar.routes");
 
 app.use(morgan("tiny"));
 //// Lectura y parseo del body
@@ -93,6 +94,9 @@ app.use("/clients/wishlist", ClientWishListRoutes);
 
 // File
 app.use("/file", FileRoutes);
+
+// Sidebar
+app.use("/sidebar", SidebarRoutes);
 
 // // AUTH
 // app.use("/auth", ClientsAuthRoutes);

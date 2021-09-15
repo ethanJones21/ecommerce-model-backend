@@ -10,6 +10,8 @@ const {
     validateJWT,
 } = require("../../../shared/middlewares/validate-jwt.middleware");
 
+const { validateUSER } = require("../../../shared/middlewares/role.middleware");
+
 const router = Router();
 
 router.get("/paginado", [validateJWT, validateUSER], getMessagesByPage);

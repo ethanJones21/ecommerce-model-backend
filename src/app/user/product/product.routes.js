@@ -13,6 +13,7 @@ const router = Router();
 const {
     validateJWT,
 } = require("../../../shared/middlewares/validate-jwt.middleware");
+const { validateUSER } = require("../../../shared/middlewares/role.middleware");
 const multiparty = require("connect-multiparty");
 const UPLOAD = multiparty({ uploadDir: "../../../uploads/products" });
 
