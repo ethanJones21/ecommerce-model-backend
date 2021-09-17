@@ -12,7 +12,7 @@ const UserSchema = new Schema(
         phone: { type: String, required: false },
         role: {
             type: String,
-            default: "Trabajador",
+            default: "USER",
             required: true,
         },
         birthday: { type: String, required: false },
@@ -23,7 +23,7 @@ const UserSchema = new Schema(
 );
 
 UserSchema.method("toJSON", function () {
-    const { __v, _id, pass, ...object } = this.toObject();
+    const { __v, _id, password, ...object } = this.toObject();
     object.uid = _id;
     return object;
 });

@@ -20,7 +20,7 @@ const ClientSchema = new Schema(
 );
 
 ClientSchema.method("toJSON", function () {
-    const { __v, _id, pass, ...object } = this.toObject();
+    const { __v, _id, password, ...object } = this.toObject();
     object.uid = _id;
     return object;
 });
