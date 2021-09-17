@@ -10,13 +10,19 @@ const {
     validateJWT,
 } = require("../../../shared/middlewares/validate-jwt.middleware");
 
-const { validateUSER } = require("../../../shared/middlewares/role.middleware");
+const {
+    validateUSER_or_ADMIN,
+} = require("../../../shared/middlewares/role.middleware");
 
 const router = Router();
 
-router.get("/paginado", [validateJWT, validateUSER], getMessagesByPage);
-router.get("/:id", [validateJWT, validateUSER], getMessage);
+router.get(
+    "/paginado",
+    [validateJWT, validateUSER_or_ADMIN],
+    getMessagesByPage
+);
+router.get("/:id", [validateJWT, validateUSER_or_ADMIN], getMessage);
 
-router.patch("/:id", [validateJWT, validateUSER], responseMessage);
+router.patch("/:id", [validateJWT, validateUSER_or_ADMIN], responseMessage);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const UserGaleryRoutes = require("./galery/galery.routes");
 const UserInventoryRoutes = require("./inventory/inventory.routes");
 const UserMessageRoutes = require("./message/message.routes");
 const UserProductRoutes = require("./product/product.routes");
-const UserSaleRoutes = require("./sale/sale.routes");
+const UserOrderRoutes = require("./order/order.routes");
 const UserRoutes = require("./user/user.routes");
 const UserVarietyRoutes = require("./variety/variety.routes");
 
@@ -15,7 +15,7 @@ module.exports = {
     UserInventoryRoutes,
     UserMessageRoutes,
     UserProductRoutes,
-    UserSaleRoutes,
+    UserOrderRoutes,
     UserRoutes,
     UserVarietyRoutes,
 };

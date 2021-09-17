@@ -1,5 +1,5 @@
 const { response, request } = require("express");
-const Config = require("../../../shared/models/config.model");
+const Config = require("../../../shared/models/setting.model");
 
 const getDelivery = async (req = request, res = response) => {
     const idConfig = process.env.IDCONFIG;

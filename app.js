@@ -23,7 +23,7 @@ const { dbConnection } = require("./src/database/config");
 // Admin
 const {
     AdminClientRoutes,
-    AdminConfigRoutes,
+    AdminSettingRoutes,
     AdminUserRoutes,
 } = require("./src/app/admin/admin.module");
 
@@ -35,7 +35,7 @@ const {
     UserInventoryRoutes,
     UserMessageRoutes,
     UserProductRoutes,
-    UserSaleRoutes,
+    UserOrderRoutes,
     UserRoutes,
     UserVarietyRoutes,
 } = require("./src/app/user/user.module");
@@ -45,7 +45,8 @@ const {
     ClientAddressRoutes,
     ClientCartRoutes,
     ClientRoutes,
-    ClientConfigRoutes,
+    ClientOrderRoutes,
+    ClientSettingRoutes,
     ClientMessageRoutes,
     ClientReviewRoutes,
     ClientWishListRoutes,
@@ -69,7 +70,7 @@ app.use(cors());
 
 // Admin
 app.use("/admins/clients", AdminClientRoutes);
-app.use("/admins/configs", AdminConfigRoutes);
+app.use("/admins/settings", AdminSettingRoutes);
 app.use("/admins/users", AdminUserRoutes);
 
 // User
@@ -79,7 +80,7 @@ app.use("/users/galery", UserGaleryRoutes);
 app.use("/users/inventories", UserInventoryRoutes);
 app.use("/users/messages", UserMessageRoutes);
 app.use("/users/products", UserProductRoutes);
-app.use("/users/sales", UserSaleRoutes);
+app.use("/users/orders", UserOrderRoutes);
 app.use("/users", UserRoutes);
 app.use("/users/varieties", UserVarietyRoutes);
 
@@ -87,7 +88,8 @@ app.use("/users/varieties", UserVarietyRoutes);
 app.use("/clients/addresses", ClientAddressRoutes);
 app.use("/clients/cart", ClientCartRoutes);
 app.use("/clients", ClientRoutes);
-app.use("/clients/config", ClientConfigRoutes);
+app.use("/clients/settings", ClientSettingRoutes);
+app.use("/clients/orders", ClientOrderRoutes);
 app.use("/clients/messages", ClientMessageRoutes);
 app.use("/clients/reviews", ClientReviewRoutes);
 app.use("/clients/wishlist", ClientWishListRoutes);

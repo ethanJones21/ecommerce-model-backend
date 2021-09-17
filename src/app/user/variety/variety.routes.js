@@ -11,17 +11,19 @@ const {
     validateJWT,
 } = require("../../../shared/middlewares/validate-jwt.middleware");
 
-const { validateUSER } = require("../../../shared/middlewares/role.middleware");
+const {
+    validateUSER_or_ADMIN,
+} = require("../../../shared/middlewares/role.middleware");
 
 const router = Router();
 
-router.get("/:productID", [validateJWT, validateUSER], getVarieties);
+router.get("/:productID", [validateJWT, validateUSER_or_ADMIN], getVarieties);
 
-router.post("/:productID", [validateJWT, validateUSER], createVariety);
-router.put("/:productID", [validateJWT, validateUSER], updateVariety);
+router.post("/:productID", [validateJWT, validateUSER_or_ADMIN], createVariety);
+router.put("/:productID", [validateJWT, validateUSER_or_ADMIN], updateVariety);
 router.delete(
     "/:productID/:varietyID",
-    [validateJWT, validateUSER],
+    [validateJWT, validateUSER_or_ADMIN],
     deleteVariety
 );
 

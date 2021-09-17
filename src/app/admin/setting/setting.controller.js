@@ -1,17 +1,17 @@
 const { response, request } = require("express");
-const Config = require("../../../shared/models/config.model");
+const Setting = require("../../../shared/models/setting.model");
 const path = require("path");
 const {
     deleteBeforeFile,
 } = require("../../../shared/helpers/delete-file.helper");
 
-const getConfig = async (req = request, res = response) => {
-    const idConfig = process.env.IDCONFIG;
+const getSetting = async (req = request, res = response) => {
+    const idSetting = process.env.IDCONFIG;
     try {
-        const config = await Config.findById(idConfig);
+        const setting = await Setting.findById(idSetting);
         res.json({
             ok: true,
-            config,
+            setting,
         });
     } catch (error) {
         console.log(error);
@@ -22,21 +22,21 @@ const getConfig = async (req = request, res = response) => {
     }
 };
 
-const updateConfig = async (req = request, res = response) => {
-    const idConfig = process.env.IDCONFIG;
-    const newConfig_a = req.body;
+const updateSetting = async (req = request, res = response) => {
+    const idSetting = process.env.IDCONFIG;
+    const newSetting_a = req.body;
     try {
-        const searchID = await Config.findById(idConfig);
+        const searchID = await Setting.findById(idSetting);
         if (!searchID) {
             return res.status(404).json({
                 ok: true,
                 msg: "Configuracion no encontrado por id",
-                config: {},
+                setting: {},
             });
         }
 
-        for (let i = 0; i < newConfig_a.categories.length; i++) {
-            newConfig_a.categories[i] = JSON.parse(newConfig_a.categories[i]);
+        for (let i = 0; i < newSetting_a.categories.length; i++) {
+            newSetting_a.categories[i] = JSON.parse(newSetting_a.categories[i]);
         }
 
         let path_a = req.files.logo.path;
@@ -48,16 +48,16 @@ const updateConfig = async (req = request, res = response) => {
                 `../uploads/logo/${searchID.logo}`
             );
             await deleteBeforeFile(res, pathImg);
-            newConfig_a.logo = path_a;
+            newSetting_a.logo = path_a;
         }
 
-        const newConfig = await Config.findByIdAndUpdate(id, newConfig_a, {
+        const newSetting = await Setting.findByIdAndUpdate(id, newSetting_a, {
             new: true,
         });
         res.json({
             ok: true,
             msg: "Configuracion actualizada",
-            config: newConfig,
+            setting: newSetting,
         });
     } catch (error) {
         console.log(error);
@@ -69,6 +69,6 @@ const updateConfig = async (req = request, res = response) => {
 };
 
 module.exports = {
-    getConfig,
-    updateConfig,
+    getSetting,
+    updateSetting,
 };

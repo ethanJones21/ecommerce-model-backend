@@ -9,7 +9,7 @@ const SaleSchema = new Schema(
         delivery: { type: Object, required: true },
         transaction: { type: String, required: true },
         coupon: { type: String, required: true },
-        state: { type: String, required: true },
+        state: { type: String, default: "Procesando", required: true },
         address: {
             type: Object,
             required: true,

@@ -1,9 +1,9 @@
 const AdminClientRoutes = require("./client/client.routes");
-const AdminConfigRoutes = require("./config/config.routes");
+const AdminSettingRoutes = require("./setting/setting.routes");
 const AdminUserRoutes = require("./user/user.routes");
 
 module.exports = {
     AdminClientRoutes,
-    AdminConfigRoutes,
+    AdminSettingRoutes,
     AdminUserRoutes,
 };

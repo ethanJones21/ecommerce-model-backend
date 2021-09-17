@@ -16,39 +16,50 @@ const sidebar = async (req = request, res = response) => {
         const sidebarArr = [
             {
                 title: "Inicio",
-                link: "/panel/admin/home",
-                icon: "cxi-cart",
+                link: "/panel/admins/home",
+                icon: "cxi-home",
             },
             {
                 title: "Productos",
                 link: "/panel/products",
-                icon: "ci-hanger",
+                icon: "cxi-hanger",
             },
-            { title: "Cupones", link: "/panel/coupons", icon: "cxi-cart" },
-            { title: "Mensajes", link: "/panel/messages", icon: "cxi-cart" },
-            { title: "Ventas", link: "/panel/sales", icon: "cxi-cart" },
+            {
+                title: "Cupones",
+                link: "/panel/coupons",
+                icon: "cxi-heart-filled",
+            },
+            {
+                title: "Mensajes",
+                link: "/panel/messages",
+                icon: "cxi-envelope-opened",
+            },
+            { title: "Pedidos", link: "/panel/orders", icon: "cxi-paypal" },
             {
                 title: "Usuarios",
                 link: "/panel/admins/users",
-                icon: "cxi-cart",
+                icon: "cxi-lock",
             },
             {
                 title: "Clientes",
                 link: "/panel/admins/clients",
-                icon: "cxi-cart",
+                icon: "cxi-odnoklassniki",
             },
             {
                 title: "Configuraciones",
                 link: "/panel/admins/settings",
-                icon: "ci-settings",
+                icon: "cxi-settings",
             },
         ];
 
         if (usuarioDB.role === "USER") {
-            removeElementFromArray(sidebarArr, "Inicio");
-            removeElementFromArray(sidebarArr, "Configuraciones");
-            removeElementFromArray(sidebarArr, "Usuarios");
-            removeElementFromArray(sidebarArr, "Clientes");
+            const delTitles = [
+                "Inicio",
+                "Configuraciones",
+                "Usuarios",
+                "Clientes",
+            ];
+            removeElementFromArray(sidebarArr, delTitles);
             return res.json({
                 ok: true,
                 sidebar: sidebarArr,
@@ -68,9 +79,11 @@ const sidebar = async (req = request, res = response) => {
     }
 };
 
-const removeElementFromArray = (arr, title) => {
-    const indice = arr.findIndex((a) => a.title === title);
-    delete arr[indice];
+const removeElementFromArray = (arr, titles) => {
+    for (const title of titles) {
+        const indice = arr.findIndex((a) => a.title === title);
+        arr.splice(indice, 1);
+    }
 };
 
 module.exports = {

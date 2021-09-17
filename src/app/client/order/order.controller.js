@@ -1,14 +1,49 @@
 const { response, request } = require("express");
 const Sale = require("../../../shared/models/sale.model");
 const SaleDetail = require("../../../shared/models/sale-detail.model");
-const Config = require("../../../shared/models/config.model");
+const Setting = require("../../../shared/models/setting.model");
+const {
+    conditionPrevious,
+    conditionNext,
+    fillPagesArr,
+} = require("../../../shared/helpers/pages.helper");
 
-const getSales = async (req = request, res = response) => {
+const getClientOrdersByPage = async (req = request, res = response) => {
+    const client = req.uid;
+
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    let orders = {
+        orders: [],
+        next: null,
+        previous: null,
+        pages: [],
+        longitud: 0,
+    };
+
     try {
-        const sale = await Sale.find();
+        const longitud = await Sale.find({
+            client,
+        }).countDocuments();
+        orders.longitud = longitud;
+        orders.orders = await Sale.find({
+            client,
+        })
+            .limit(limit)
+            .skip(startIndex);
+
+        const lengthArr = Math.ceil(longitud / limit);
+        orders.pages = fillPagesArr(lengthArr);
+
+        orders.previous = conditionPrevious(startIndex, page, limit);
+        orders.next = conditionNext(endIndex, longitud, page, limit);
+
         res.json({
             ok: true,
-            sale,
+            orders,
         });
     } catch (error) {
         console.log(error);
@@ -19,12 +54,31 @@ const getSales = async (req = request, res = response) => {
     }
 };
 
-const createSale = async (req = request, res = response) => {
+const getOrder = async (req = request, res = response) => {
+    const id = req.params.id;
+    try {
+        const order = await Sale.findById(id);
+        const details = await SaleDetail.findById(id);
+        res.json({
+            ok: true,
+            order,
+            details,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error inesperado... revisar logs",
+        });
+    }
+};
+
+const createOrder = async (req = request, res = response) => {
     const client = req.uid;
     const { details, ...sale } = req.body;
     try {
-        const idConfig = process.env.IDCONFIG;
-        const { serie, correlative } = await Config.findById(idConfig);
+        const idSetting = process.env.IDCONFIG;
+        const { serie, correlative } = await Setting.findById(idSetting);
 
         const newSale = new Sale(sale);
         newSale.client = client;
@@ -90,19 +144,8 @@ const zfill = (number, width) => {
     }
 };
 
-const deleteSale = async (req = request, res = Response) => {
-    // try {
-    // } catch (error) {
-    //     console.log(error);
-    //     res.status(500).json({
-    //         ok: false,
-    //         msg: "Error inesperado... revisar logs",
-    //     });
-    // }
-};
-
 module.exports = {
-    getSales,
-    createSale,
-    // deleteSale,
+    getClientOrdersByPage,
+    getOrder,
+    createOrder,
 };

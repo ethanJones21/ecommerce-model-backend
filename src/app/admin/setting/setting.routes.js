@@ -1,6 +1,6 @@
 const { Router } = require("express");
 
-const { getConfig, updateConfig } = require("./config.controller");
+const { getSetting, updateSetting } = require("./setting.controller");
 
 const {
     validateJWT,
@@ -15,7 +15,7 @@ const UPLOAD = multiparty({ uploadDir: "../../../uploads/logo" });
 
 const router = Router();
 
-router.get("/", [validateJWT, validateADMIN], getConfig);
-router.put("/", [validateJWT, validateADMIN, UPLOAD], updateConfig);
+router.get("/", [validateJWT, validateADMIN], getSetting);
+router.put("/", [validateJWT, validateADMIN, UPLOAD], updateSetting);
 
 module.exports = router;

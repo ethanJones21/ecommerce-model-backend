@@ -12,16 +12,18 @@ const {
     validateJWT,
 } = require("../../../shared/middlewares/validate-jwt.middleware");
 
-const { validateUSER } = require("../../../shared/middlewares/role.middleware");
+const {
+    validateUSER_or_ADMIN,
+} = require("../../../shared/middlewares/role.middleware");
 
 const router = Router();
 
-router.get("/paginado", [validateJWT, validateUSER], getCouponsByPage);
-router.get("/:id", [validateJWT, validateUSER], getCoupon);
+router.get("/paginado", [validateJWT, validateUSER_or_ADMIN], getCouponsByPage);
+router.get("/:id", [validateJWT, validateUSER_or_ADMIN], getCoupon);
 
-router.post("/", [validateJWT, validateUSER], createCoupon);
+router.post("/", [validateJWT, validateUSER_or_ADMIN], createCoupon);
 
-router.put("/:id", [validateJWT, validateUSER], updateCoupon);
-router.delete("/:id", [validateJWT, validateUSER], deleteCoupon);
+router.put("/:id", [validateJWT, validateUSER_or_ADMIN], updateCoupon);
+router.delete("/:id", [validateJWT, validateUSER_or_ADMIN], deleteCoupon);
 
 module.exports = router;
