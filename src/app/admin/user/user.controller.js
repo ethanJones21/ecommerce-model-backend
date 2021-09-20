@@ -1,4 +1,5 @@
 const { response, request } = require("express");
+const bcrypt = require("bcryptjs");
 const User = require("../../../shared/models/user.model");
 const {
     conditionPrevious,
@@ -60,6 +61,42 @@ const getUser = async (req = request, res = response) => {
         res.json({
             ok: true,
             user,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: "Error inesperado... revisar logs",
+        });
+    }
+};
+
+const createUser = async (req, res = response) => {
+    const { email, password } = req.body;
+    try {
+        // Comprobar si ya existe el correo
+        const existEmail = await User.findOne({ email });
+        if (existEmail) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Correo ya está registrado",
+            });
+        }
+        // Creando un nuevo User
+        const newUser = new User(req.body);
+
+        // Encriptar contraseña
+        const salt = bcrypt.genSaltSync();
+        newUser.password = bcrypt.hashSync(password, salt);
+
+        // guardar User
+        await newUser.save();
+
+        const { name, role } = newUser;
+
+        res.json({
+            ok: true,
+            msg: `Se creo un nuevo usuario: ${name} con role: ${role}`,
         });
     } catch (error) {
         console.log(error);
@@ -132,6 +169,7 @@ const deactivateUser = async (req = request, res = Response) => {
 module.exports = {
     getUsersByPage,
     getUser,
+    createUser,
     updateUser,
     deactivateUser,
 };

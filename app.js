@@ -25,6 +25,7 @@ const {
     AdminClientRoutes,
     AdminSettingRoutes,
     AdminUserRoutes,
+    AdminHomeRoutes,
 } = require("./src/app/admin/admin.module");
 
 // User
@@ -50,6 +51,7 @@ const {
     ClientMessageRoutes,
     ClientReviewRoutes,
     ClientWishListRoutes,
+    ClientProductRoutes,
 } = require("./src/app/client/client.module");
 
 // File
@@ -72,6 +74,7 @@ app.use(cors());
 app.use("/admins/clients", AdminClientRoutes);
 app.use("/admins/settings", AdminSettingRoutes);
 app.use("/admins/users", AdminUserRoutes);
+app.use("/admins/home", AdminHomeRoutes);
 
 // User
 app.use("/users/addresses", UserAddressRoutes);
@@ -93,6 +96,7 @@ app.use("/clients/orders", ClientOrderRoutes);
 app.use("/clients/messages", ClientMessageRoutes);
 app.use("/clients/reviews", ClientReviewRoutes);
 app.use("/clients/wishlist", ClientWishListRoutes);
+app.use("/clients/products", ClientProductRoutes);
 
 // File
 app.use("/file", FileRoutes);

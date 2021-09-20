@@ -31,6 +31,7 @@ const getMessagesByPage = async (req = request, res = response) => {
         messages.messages = await Message.find({
             $or: [{ subject: regex }, { state: regex }],
         })
+            .populate("client", "name lastname email")
             .limit(limit)
             .skip(startIndex);
 

@@ -1,8 +1,16 @@
 const { response, request } = require("express");
 const Sale = require("../../../shared/models/sale.model");
 const SaleDetail = require("../../../shared/models/sale-detail.model");
+const {
+    conditionPrevious,
+    conditionNext,
+    fillPagesArr,
+} = require("../../../shared/helpers/pages.helper");
 
 const getAllOrdersByPage = async (req = request, res = response) => {
+    const term = req.query.term;
+    const regex = new RegExp(term, "i");
+
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit);
     const startIndex = (page - 1) * limit;
@@ -17,9 +25,15 @@ const getAllOrdersByPage = async (req = request, res = response) => {
     };
 
     try {
-        const longitud = await Sale.find().countDocuments();
+        const longitud = await Sale.find({
+            nsale: regex,
+        }).countDocuments();
         orders.longitud = longitud;
-        orders.orders = await Sale.find().limit(limit).skip(startIndex);
+        orders.orders = await Sale.find({
+            nsale: regex,
+        })
+            .limit(limit)
+            .skip(startIndex);
 
         const lengthArr = Math.ceil(longitud / limit);
         orders.pages = fillPagesArr(lengthArr);
@@ -64,6 +78,7 @@ const getClientOrdersByPage = async (req = request, res = response) => {
         orders.orders = await Sale.find({
             client,
         })
+            .populate("client", "name lastname")
             .limit(limit)
             .skip(startIndex);
 
@@ -89,8 +104,14 @@ const getClientOrdersByPage = async (req = request, res = response) => {
 const getOrder = async (req = request, res = response) => {
     const id = req.params.id;
     try {
-        const order = await Sale.findById(id);
-        const details = await SaleDetail.findById(id);
+        const order = await Sale.findById(id).populate(
+            "client",
+            "name lastname"
+        );
+        const details = await SaleDetail.findById(id).populate(
+            "products",
+            "name cover subtotal price category stars"
+        );
         res.json({
             ok: true,
             order,

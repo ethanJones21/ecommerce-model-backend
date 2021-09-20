@@ -10,6 +10,7 @@ const UserSchema = new Schema(
         password: { type: String, required: true },
         profile: { type: String, default: "perfil.png", required: true },
         phone: { type: String, required: false },
+        gender: { type: String, required: true },
         role: {
             type: String,
             default: "USER",
